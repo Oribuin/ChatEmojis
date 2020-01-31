@@ -1,0 +1,8 @@
+#
+# | ChatEmojis by Oribuin |
+# | Hypixel Style plugin that allows you to use emotes in chat |
+#
+# https://github.com/Oribuin/ChatEmojis/
+
+no-permission: '&7You do not have permission to execute this command.'
+reload: '&7You have successfully reloaded &bChatEmojis &7(&a{version}&7).'

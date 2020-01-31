@@ -1,0 +1,35 @@
+# List all your emojis here
+
+emojis:
+  shrug:
+    check: ":shrug:"
+    replacement: "&e¯\\_(ツ)_/¯"
+    permission: "emoji.shrug"
+
+  bear:
+    check: ":bear:"
+    replacement: "ʕ•ᴥ•ʔ"
+    permission: "emoji.bear"
+
+  lenny:
+    check: ":lenny:"
+    replacement: "(͡° ͜ʖ ͡°)"
+    permission: "emoji.lenny"
+
+  star:
+    check: ":star:"
+    replacement: "&e&l✮"
+    permission: "emoji.star"
+
+  wave:
+    check: ":wave:"
+    replacement: "&d( ﾟ◡ﾟ)/"
+    permission: "emoji.wave"
+
+# If you have a \ in your replacement, change it to \\
+
+
+# name:
+#   check: "text"
+#   replacement: "replacement"
+#   permission: "permission"

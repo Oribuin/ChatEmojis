@@ -1,0 +1,11 @@
+name: ChatEmojis
+main: xyz.oribuin.chatemojis.ChatEmojis
+version: 1.0-BETA
+author: Oribuin
+api-version: "1.13"
+description: Hypixel Style plugin that allows you to use emotes in chat
+website: https://oribuin.xyz/
+commands:
+  chatemojis:
+    description: Reloads the plugin's config.yml
+    usage: /chatemojis
