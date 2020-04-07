@@ -29,6 +29,7 @@ dependencies {
 shadowJar {
     mergeServiceFiles()
     minimize()
+    relocate('dev.esophose.guiframework', 'xyz.oribuin.chatemojis.lib.guiframework')
     exclude 'META-INF/*.DSA'
     exclude 'META-INF/*.RSA'
     archiveName 'ChatEmojis-' + project.property("version") + ".jar"
