@@ -5,12 +5,16 @@ author: Oribuin
 api-version: "1.13"
 description: Hypixel Style plugin that allows you to use emotes in chat
 website: https://oribuin.xyz/
-depend:
+softdepend:
   - PlaceholderAPI
 commands:
   emojis:
-    description: Opens the emojis gui.
-    usage: /emojis <reload>
+    description: Main plugin command.
+    usage: /emojis
+    aliases:
+      - chatemojis
+      - chatemoji
+      - emoji
 
 permissions:
   chatemojis.*:
@@ -18,12 +22,23 @@ permissions:
     description: All permissions for the plugin.
     children:
       - chatemojis.menu
+      - chatemojis.menu.other
       - chatemojis.reload
+      - chatemojis.create
 
   chatemojis.menu:
     description: Open the /emojis menu.
     default: op
 
+  chatemojis.menu.other:
+    description: Open the /emojis menu for another player.
+    default: op
+    children:
+      - chatemojis.menu
   chatemojis.reload:
     description: Reload the plugin's configuration files.
+    default: op
+
+  chatemojis.create:
+    description: Create an emoji.
     default: op

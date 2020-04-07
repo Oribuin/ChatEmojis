@@ -19,7 +19,7 @@ public class EventPlayerChat implements Listener {
     private ChatEmojis chatEmojis = ChatEmojis.getInstance();
 
     @EventHandler(ignoreCancelled = true)
-    public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
+    public void onChat(AsyncPlayerChatEvent event) {
         FileConfiguration emojiConfig = YamlConfiguration.loadConfiguration(new File(chatEmojis.getDataFolder(), "emojis.yml"));
         ConfigurationSection emojiSec = emojiConfig.getConfigurationSection("emojis");
         if (emojiSec == null) return;

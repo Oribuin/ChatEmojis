@@ -7,6 +7,7 @@ import xyz.oribuin.chatemojis.cmds.CmdEmojis;
 import xyz.oribuin.chatemojis.events.EventPlayerChat;
 import xyz.oribuin.chatemojis.hooks.PAPI;
 import xyz.oribuin.chatemojis.hooks.PluginPlaceholders;
+import xyz.oribuin.chatemojis.utils.TabComplete;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class ChatEmojis extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
 
         getCommand("emojis").setExecutor(new CmdEmojis());
+        getCommand("emojis").setTabCompleter(new TabComplete());
         pm.registerEvents(new EventPlayerChat(), this);
 
         if (pm.getPlugin("PlaceholderAPI") == null) {
@@ -35,7 +37,7 @@ public class ChatEmojis extends JavaPlugin {
         }
 
         if (PAPI.enabled())
-            new PluginPlaceholders(this).register();
+            new PluginPlaceholders().register();
 
         this.saveDefaultConfig();
         createFile("emojis.yml");

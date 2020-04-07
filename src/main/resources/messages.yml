@@ -4,6 +4,11 @@
 
 # • Commands •
 reload: '&bYou have reloaded ChatEmojis! &7(&9%version%&7)'
+# %emote% - Name of emoji
+# %check% - The check for the emoji
+# %replacement% - The replacement
+# %permission% - Permission required to use emoji.
+emoji-create: '&bYou have created "%emoji%!'
 
 # • Misc •
 invalid-player: '&cPlease enter a valid player.'

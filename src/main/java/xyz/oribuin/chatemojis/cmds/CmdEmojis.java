@@ -12,15 +12,16 @@ import xyz.oribuin.chatemojis.menus.MenuEmojiList;
 import xyz.oribuin.chatemojis.utils.Color;
 
 import java.io.File;
+import java.io.IOException;
 
 public class CmdEmojis implements CommandExecutor {
 
     private ChatEmojis chatEmojis = ChatEmojis.getInstance();
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         FileConfiguration config = chatEmojis.getConfig();
         FileConfiguration msgConfig = YamlConfiguration.loadConfiguration(new File(chatEmojis.getDataFolder(), "messages.yml"));
-        FileConfiguration emojiConfig = YamlConfiguration.loadConfiguration(new File(chatEmojis.getDataFolder(), "emojis.yml"));
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("reload") && sender.hasPermission("chatemojis.reload")) {
             chatEmojis.reloadConfig();
@@ -33,9 +34,36 @@ public class CmdEmojis implements CommandExecutor {
             return true;
         }
 
+        if (args.length >= 4 && args[0].equalsIgnoreCase("create") && sender.hasPermission("chatemojis.create")) {
+            FileConfiguration emojiConfig = YamlConfiguration.loadConfiguration(new File(chatEmojis.getDataFolder(), "emojis.yml"));
 
+            final String msg = String.join(" ", args);
+            final String replacement = msg.substring(args[0].length() + args[1].length() + args[2].length() + 3);
+            emojiConfig.set("emojis." + args[1].toLowerCase() + ".name", "" + args[1]);
+            emojiConfig.set("emojis." + args[1].toLowerCase() + ".check", args[2].toLowerCase());
+            emojiConfig.set("emojis." + args[1].toLowerCase() + ".replacement", replacement);
+            emojiConfig.set("emojis." + args[1].toLowerCase() + ".permission", "emoji." + args[1].toLowerCase());
+
+            try {
+                emojiConfig.save(new File(chatEmojis.getDataFolder(), "emojis.yml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            sender.sendMessage(Color.msg(msgConfig.getString("emoji-create")
+                    .replaceAll("%emoji%", args[1].toLowerCase())
+                    .replaceAll("%check%", args[2].toLowerCase())
+                    .replaceAll("%replacement%", replacement)
+                    .replaceAll("%permission%", "emoji." + args[1].toLowerCase())));
+            return true;
+        }
 
         if (args.length >= 1 && Bukkit.getPlayer(args[0]) != null) {
+            if (!sender.hasPermission("chatemojis.menu.other")) {
+                sender.sendMessage(Color.msg(msgConfig.getString("invalid-permission")));
+                return true;
+            }
+
             new MenuEmojiList(Bukkit.getPlayer(args[0])).openFor();
             return true;
         }

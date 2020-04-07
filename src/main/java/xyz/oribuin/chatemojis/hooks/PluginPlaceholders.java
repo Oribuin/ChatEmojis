@@ -13,11 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PluginPlaceholders extends PlaceholderExpansion {
-    private ChatEmojis plugin;
-
-    public PluginPlaceholders(ChatEmojis plugin) {
-        this.plugin = plugin;
-    }
+    private ChatEmojis plugin = ChatEmojis.getInstance();
 
     @Override
     public String onPlaceholderRequest(Player player, String placeholder) {
