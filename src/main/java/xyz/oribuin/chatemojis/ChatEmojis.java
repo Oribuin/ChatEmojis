@@ -3,65 +3,47 @@ package xyz.oribuin.chatemojis;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.oribuin.chatemojis.cmds.CmdReload;
-import xyz.oribuin.chatemojis.listeners.EmojiSend;
-import xyz.oribuin.chatemojis.utils.Chat;
+import xyz.oribuin.chatemojis.cmds.CmdEmojis;
+import xyz.oribuin.chatemojis.events.EventPlayerChat;
+import xyz.oribuin.chatemojis.hooks.PAPI;
+import xyz.oribuin.chatemojis.hooks.PluginPlaceholders;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ChatEmojis extends JavaPlugin {
+
+    private static ChatEmojis instance;
+
+    public static ChatEmojis getInstance() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
-
-        /*
-         * Variable Defining
-         */
-
+        instance = this;
         PluginManager pm = Bukkit.getPluginManager();
 
-        /*
-         * Registering commands
-         */
+        getCommand("emojis").setExecutor(new CmdEmojis());
+        pm.registerEvents(new EventPlayerChat(), this);
 
-        getCommand("chatemojis").setExecutor(new CmdReload(this));
+        if (pm.getPlugin("PlaceholderAPI") == null) {
+            this.getLogger().warning("PlaceholderAPI is not installed, therefor PlaceholderAPI will not work.");
+        }
 
-        /*
-         * Registering events
-         */
-
-        pm.registerEvents(new EmojiSend(this), this);
-
-        /*
-         * Create the config.yml
-         */
+        if (PAPI.enabled())
+            new PluginPlaceholders(this).register();
 
         this.saveDefaultConfig();
-
-        /*
-         * Create the emojis.yml
-         */
-
-        copyDefaultResource("emojis.yml");
-
-        /*
-         * Startup Message
-         */
-
-        this.getServer().getConsoleSender().sendMessage(Chat.cl(
-                "\n\n&e******************\n" +
-                        "\n&6Plugin: &f" + this.getDescription().getName() +
-                        "\n&6Author: &f" + this.getDescription().getAuthors().get(0) +
-                        "\n&6Version: &f" + this.getDescription().getVersion() +
-                        "\n&6Website: &f" + this.getDescription().getWebsite() +
-                        "\n\n&e******************"
-        ));
+        createFile("emojis.yml");
+        createFile("messages.yml");
 
     }
 
-    public void copyDefaultResource(String fileName) {
+    private void createFile(String fileName) {
         File file = new File(this.getDataFolder(), fileName);
         if (!file.exists()) {
             try (InputStream inStream = this.getResource(fileName)) {

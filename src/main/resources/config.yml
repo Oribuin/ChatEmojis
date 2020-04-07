@@ -4,5 +4,51 @@
 #
 # https://github.com/Oribuin/ChatEmojis/
 
-no-permission: '&7You do not have permission to execute this command.'
-reload: '&7You have successfully reloaded &bChatEmojis &7(&a{version}&7).'
+disabled-worlds:
+  - 'disabled-world-1'
+  - 'disabled-world-2'
+
+menu:
+  # Use %players% Placeholder to gain list of players on the server.
+  title: 'Emoji Count | %emojis%'
+  # For a list of materials use (https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
+  border: 'GRAY_STAINED_GLASS_PANE'
+  use-sound: true
+  # For a list of sounds use (https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html)
+  click-sound: 'ENTITY_ARROW_HIT_PLAYER'
+
+  # Supports PlaceholderAPI
+  emoji:
+    name: '&e%emoji_name%'
+    material: 'NAME_TAG'
+    lore:
+      - ' &c» &fKeyword: &c%emoji_check%'
+      - ' &c» &fEmoji: &c%emoji_replacement%'
+      - ''
+      - ' &c» &fPermission: &c%emoji_permission%'
+    glowing: true
+
+  # Anything below does not support PlaceholderAPI
+  back-page:
+    name: '&e« Back Page'
+    material: 'PAPER'
+    slot: 47
+    glowing: false
+    lore:
+      - ''
+
+  forward-page:
+    name: '&eNext Page »'
+    material: 'PAPER'
+    slot: 51
+    glowing: false
+    lore:
+      - ''
+
+  close-menu:
+    name: '&c« Close Menu »'
+    material: 'BARRIER'
+    slot: 49
+    glowing: true
+    lore:
+      - ''

@@ -1,35 +1,34 @@
-# List all your emojis here
+#
+# Configure all your Emojis in this file.
+#
+
+# This plugin is very awkward and it may require you to put a double backslash
+# I will look into why this is happening
+
+# emoji-name:
+#   name: 'name' | Note: This name is what will show up in the GUI.
+#   check: 'text'
+#   replacement: 'replacement'
+#   permission: 'permission'
 
 emojis:
   shrug:
-    check: ":shrug:"
-    replacement: "&e¯\\_(ツ)_/¯"
-    permission: "emoji.shrug"
-
+    name: '&cShrug Emoji'
+    check: ':shrug:'
+    replacement: '&e¯\_(ツ)_/¯'
+    permission: 'emoji.shrug'
   bear:
-    check: ":bear:"
-    replacement: "ʕ•ᴥ•ʔ"
-    permission: "emoji.bear"
-
-  lenny:
-    check: ":lenny:"
-    replacement: "(͡° ͜ʖ ͡°)"
-    permission: "emoji.lenny"
-
+    name: '&cBear Emoji'
+    check: ':bear:'
+    replacement: 'ʕ•ᴥ•ʔ'
+    permission: 'emoji.bear'
   star:
-    check: ":star:"
-    replacement: "&e&l✮"
-    permission: "emoji.star"
-
+    name: '&cStar Emoji'
+    check: ':star:'
+    replacement: '&e&l✮'
+    permission: 'emoji.star'
   wave:
-    check: ":wave:"
-    replacement: "&d( ﾟ◡ﾟ)/"
-    permission: "emoji.wave"
-
-# If you have a \ in your replacement, change it to \\
-
-
-# name:
-#   check: "text"
-#   replacement: "replacement"
-#   permission: "permission"
+    name: '&cWave Emoji'
+    check: ':wave:'
+    replacement: '&d( ﾟ◡ﾟ)/'
+    permission: 'emoji.wave'
