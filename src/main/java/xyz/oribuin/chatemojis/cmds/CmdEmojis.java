@@ -23,6 +23,7 @@ public class CmdEmojis implements CommandExecutor {
         FileConfiguration config = chatEmojis.getConfig();
         FileConfiguration msgConfig = YamlConfiguration.loadConfiguration(new File(chatEmojis.getDataFolder(), "messages.yml"));
 
+
         if (args.length >= 1 && args[0].equalsIgnoreCase("reload") && sender.hasPermission("chatemojis.reload")) {
             chatEmojis.reloadConfig();
             YamlConfiguration.loadConfiguration(new File(chatEmojis.getDataFolder(), "messages.yml"));

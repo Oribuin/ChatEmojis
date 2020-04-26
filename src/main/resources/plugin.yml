@@ -3,7 +3,7 @@ main: xyz.oribuin.chatemojis.ChatEmojis
 version: @version@
 author: Oribuin
 api-version: "1.13"
-description: Hypixel Style plugin that allows you to use emotes in chat
+description: Create your own customizable emojis to spice up your chat!
 website: https://oribuin.xyz/
 softdepend:
   - PlaceholderAPI

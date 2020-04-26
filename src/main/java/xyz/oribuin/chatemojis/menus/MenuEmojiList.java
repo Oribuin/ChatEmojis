@@ -1,5 +1,6 @@
 package xyz.oribuin.chatemojis.menus;
 
+import dev.esophose.guiframework.GuiFactory;
 import dev.esophose.guiframework.GuiFramework;
 import dev.esophose.guiframework.gui.*;
 import dev.esophose.guiframework.gui.screen.GuiScreen;
@@ -16,10 +17,7 @@ import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.hooks.PAPI;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class MenuEmojiList {
     private ChatEmojis chatEmojis = ChatEmojis.getInstance();
@@ -41,7 +39,7 @@ public class MenuEmojiList {
     }
 
     public void buildGui() {
-        this.guiContainer = new GuiContainer();
+        this.guiContainer = dev.esophose.guiframework.GuiFactory.createContainer();
 
         FileConfiguration menuConfig = chatEmojis.getConfig();
         FileConfiguration emojiConfig = YamlConfiguration.loadConfiguration(new File(chatEmojis.getDataFolder(), "emojis.yml"));
@@ -73,16 +71,16 @@ public class MenuEmojiList {
         emojiSec.getKeys(false).stream().filter(emoji -> player.hasPermission(emoji + ".permission")).forEach(emojiList::add);
         int emojiCount = emojiList.size();
 
-        GuiScreen mainScreen = new GuiScreen(this.guiContainer, GuiSize.ROWS_SIX)
+        GuiScreen mainScreen = GuiFactory.createScreen(this.guiContainer, GuiSize.ROWS_SIX)
                 .setTitle(PAPI.apply(player, menuConfig.getString("menu.title").replace("%emojis%", "" + emojiCount)));
 
         for (int slot : borderSlots)
             mainScreen.addItemStackAt(slot, borderItem);
 
 
-        mainScreen.addButtonAt(menuConfig.getInt("menu.back-page.slot"), new GuiButton()
+        mainScreen.addButtonAt(menuConfig.getInt("menu.back-page.slot"), GuiFactory.createButton()
                 .setIcon(Material.valueOf(menuConfig.getString("menu.back-page.material")))
-                .setName(menuConfig.getString("menu.back-page.name"))
+                .setName(Objects.requireNonNull(menuConfig.getString("menu.back-page.name")))
                 .setClickAction(event -> {
                     if (menuConfig.getBoolean("menu.use-sound", true)) {
                         Player cplayer = (Player) event.getWhoClicked();
@@ -96,7 +94,7 @@ public class MenuEmojiList {
                 .setGlowing(menuConfig.getBoolean("menu.back-page.glowing"))
                 .setHiddenReplacement(borderItem))
 
-                .addButtonAt(menuConfig.getInt("menu.close-menu.slot"), new GuiButton()
+                .addButtonAt(menuConfig.getInt("menu.close-menu.slot"), GuiFactory.createButton()
                         .setIcon(Material.valueOf(menuConfig.getString("menu.close-menu.material")))
                         .setName(menuConfig.getString("menu.close-menu.name"))
                         .setGlowing(menuConfig.getBoolean("menu.close-menu.glowing"))
@@ -109,7 +107,7 @@ public class MenuEmojiList {
                             return ClickAction.CLOSE;
                         }))
 
-                .addButtonAt(menuConfig.getInt("menu.forward-page.slot"), new GuiButton()
+                .addButtonAt(menuConfig.getInt("menu.forward-page.slot"), GuiFactory.createButton()
                         .setIcon(Material.valueOf(menuConfig.getString("menu.forward-page.material")))
                         .setName(menuConfig.getString("menu.forward-page.name"))
                         .setClickAction(event -> {
@@ -146,7 +144,7 @@ public class MenuEmojiList {
             }
 
             if (player.hasPermission(permission)) {
-                mainScreen.addButtonAt(slotIterator.next(), new GuiButton()
+                mainScreen.addButtonAt(slotIterator.next(), GuiFactory.createButton()
                         .setName(menuConfig.getString("menu.emoji.name").replace("%emoji_name%", name))
                         .setLore(arrayList)
                         .setClickAction(event -> {

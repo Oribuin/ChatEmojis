@@ -1,5 +1,6 @@
 package xyz.oribuin.chatemojis.events;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -26,7 +27,7 @@ public class EventPlayerChat implements Listener {
 
         Player player = event.getPlayer();
 
-        if (chatEmojis.getConfig().getString("disabled-worlds").contains(player.getWorld().getName())) return;
+        if (chatEmojis.getConfig().getStringList("disabled-worlds").contains(player.getWorld().getName())) return;
 
         for (String list : emojiSec.getKeys(false)) {
 
@@ -43,5 +44,9 @@ public class EventPlayerChat implements Listener {
                 event.setMessage(Color.msg(event.getMessage().replaceAll(Pattern.quote(check), Matcher.quoteReplacement(replacement))));
             }
         }
+    }
+
+    public String color(String msg) {
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 }
