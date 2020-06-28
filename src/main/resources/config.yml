@@ -1,53 +1,14 @@
+# ChatEmojis plugin created by Oribuin | https://www.spigotmc.org/resources/chatemojis-1-15.77123/
 #
-# | ChatEmojis by Oribuin |
-#
-# https://github.com/Oribuin/ChatEmojis/
+# Note: command-settings.allow-perm adds the permission onto a player when they create an emoji
+command-settings:
+  # Should a player be able to pay to create emojis (Requires Vault)
+  economy: true
+  # Price the player has to pay to create emojis
+  create-price: 500.0
+  # Should the permission be added to the emoji creator
+  add-perm: false
 
 disabled-worlds:
   - 'disabled-world-1'
   - 'disabled-world-2'
-
-menu:
-  # Use %players% Placeholder to gain list of players on the server.
-  title: 'Emoji Count | %emojis%'
-  # For a list of materials use (https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
-  border: 'GRAY_STAINED_GLASS_PANE'
-  use-sound: true
-  # For a list of sounds use (https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html)
-  click-sound: 'ENTITY_ARROW_HIT_PLAYER'
-
-  # Supports PlaceholderAPI
-  emoji:
-    name: '&e%emoji_name%'
-    material: 'NAME_TAG'
-    lore:
-      - ' &c» &fKeyword: &c%emoji_check%'
-      - ' &c» &fEmoji: &c%emoji_replacement%'
-      - ''
-      - ' &c» &fPermission: &c%emoji_permission%'
-    glowing: true
-
-  # Anything below does not support PlaceholderAPI
-  back-page:
-    name: '&e« Back Page'
-    material: 'PAPER'
-    slot: 47
-    glowing: false
-    lore:
-      - ''
-
-  forward-page:
-    name: '&eNext Page »'
-    material: 'PAPER'
-    slot: 51
-    glowing: false
-    lore:
-      - ''
-
-  close-menu:
-    name: '&c« Close Menu »'
-    material: 'BARRIER'
-    slot: 49
-    glowing: true
-    lore:
-      - ''

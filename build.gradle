@@ -6,29 +6,29 @@ plugins {
 }
 
 group 'xyz.oribuin'
-version '1.0.1'
-compileJava.options.encoding = 'UTF-8'
+version '1.1.0'
 
-targetCompatibility = 1.8
-sourceCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
-    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url 'https://repo.codemc.org/repository/maven-public' }
-    maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    jcenter()
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://repo.codemc.org/repository/maven-public' }
+    maven { url = 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url = 'https://jitpack.io' }
 }
 
 dependencies {
-    shadow 'org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT'
-    shadow 'me.clip:placeholderapi:2.10.5'
+    shadow 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
+    shadow 'me.clip:placeholderapi:2.10.6'
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
     implementation 'dev.esophose:guiframework:1.1.0'
 }
 
 shadowJar {
     mergeServiceFiles()
-    minimize()
     relocate('dev.esophose.guiframework', 'xyz.oribuin.chatemojis.lib.guiframework')
     archiveName 'ChatEmojis-' + project.property("version") + ".jar"
 }

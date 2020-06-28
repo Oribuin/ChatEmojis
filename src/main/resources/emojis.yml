@@ -1,34 +1,26 @@
 #
 # Configure all your Emojis in this file.
 #
-
-# This plugin is very awkward and it may require you to put a double backslash
-# I will look into why this is happening
-
+# Format:
 # emoji-name:
-#   name: 'name' | Note: This name is what will show up in the GUI.
+#   gui-name: 'name'
 #   check: 'text'
 #   replacement: 'replacement'
-#   permission: 'permission'
 
 emojis:
   shrug:
-    name: '&cShrug Emoji'
+    gui-name: '&cShrug Emoji'
     check: ':shrug:'
     replacement: '&e¯\_(ツ)_/¯'
-    permission: 'emoji.shrug'
   bear:
-    name: '&cBear Emoji'
+    gui-name: '&cBear Emoji'
     check: ':bear:'
     replacement: 'ʕ•ᴥ•ʔ'
-    permission: 'emoji.bear'
   star:
-    name: '&cStar Emoji'
+    gui-name: '&cStar Emoji'
     check: ':star:'
     replacement: '&e&l✮'
-    permission: 'emoji.star'
   wave:
-    name: '&cWave Emoji'
+    gui-name: '&cWave Emoji'
     check: ':wave:'
     replacement: '&d( ﾟ◡ﾟ)/'
-    permission: 'emoji.wave'

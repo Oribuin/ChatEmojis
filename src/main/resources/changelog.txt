@@ -1,0 +1,25 @@
+Changelog:
+  » Actual visual changes
+    • Added 1.16 Hex Color Support
+    • Added ability to pay to create an emoji (Requires Vault)
+    • Added ability to make plugin add Permission to an Emoji Creator (Requires Vault)
+    • Added ability to remove an emoji
+    • Added tab complete
+    • Added auto updating config.yml
+    • Fixed placeholders
+    • Changed permissions from custom to chatemojis.emoji.name 
+    • Changed 'emojis.emoji.name' to 'emojis.emoji.gui-name' in emojis.yml
+    • Added ability to change default formatting of emoji creation
+    • Added ability to have disable messages from messages.yml
+
+  » Code upgrades
+    • Cleaned up a lot of 5 month old code
+    • Added managers
+    • Created API Friendly methods
+    • Added Vault support
+    • Added abstract command class
+
+TO-DO List:
+    • Put GUIs in a their own Files
+    • Added "My Emojis" on config
+    • Create GUI

@@ -1,16 +1,20 @@
-#
-# Configure the in-game command messages within the plugin
-#
+# Change any message to '' to disable the message
+# For 1.16 Users: Use {#HEX} for hex codes
 
-# • Commands •
-reload: '&bYou have reloaded ChatEmojis! &7(&9%version%&7)'
-# %emote% - Name of emoji
-# %check% - The check for the emoji
-# %replacement% - The replacement
-# %permission% - Permission required to use emoji.
-emoji-create: '&bYou have created "%emoji%!'
+prefix: '{#9494ed}ChatEmojis {#cbcbd3}» '
 
-# • Misc •
+# » Command Messages «
+# %emoji% - Name | %check% - Check | %replacement% - Replacement
+created-emoji: '&bYou have created the emoji &e%replacement%&b! Use this by typing &e%check%&b!'
+money-taken: '&bYou have bought the emoji &e%emoji%&b for $&e%money%&b!'
+
+# » Misc Messages «
+reload: '&bYou have reloaded ChatEmojis (%version%)'
+invalid-permission: '&cYou do not have permission to execute this command.'
 invalid-player: '&cPlease enter a valid player.'
-invalid-permission: '&cYou don''t have permission to use this.'
-disabled-world: '&cThis command is disabled in this world.'
+invalid-arguments: '&cPlease provide valid arguments.'
+invalid-funds: '&cYou do not have enough funds for command.'
+emoji-already-exists: '&cThe emoji %emoji% already exists.'
+emoji-doesnt-exist: '&cThe emoji %emoji% does not exist.'
+unkown-command: '&cAn unknown command was entered.'
+player-only: '&cOnly a player can run this command.'

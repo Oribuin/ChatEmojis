@@ -1,20 +1,21 @@
 name: ChatEmojis
 main: xyz.oribuin.chatemojis.ChatEmojis
-version: @version@
+version: '@version@'
 author: Oribuin
 api-version: "1.13"
 description: Create your own customizable emojis to spice up your chat!
 website: https://oribuin.xyz/
 softdepend:
   - PlaceholderAPI
+  - Vault
+
 commands:
-  emojis:
+  chatemoji:
     description: Main plugin command.
-    usage: /emojis
+    usage: /chatemoji
     aliases:
       - chatemojis
-      - chatemoji
-      - emoji
+      - emojis
 
 permissions:
   chatemojis.*:
@@ -35,6 +36,7 @@ permissions:
     default: op
     children:
       - chatemojis.menu
+
   chatemojis.reload:
     description: Reload the plugin's configuration files.
     default: op

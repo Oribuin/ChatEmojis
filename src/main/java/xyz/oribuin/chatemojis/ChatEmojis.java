@@ -1,58 +1,79 @@
 package xyz.oribuin.chatemojis;
 
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.oribuin.chatemojis.cmds.CmdEmojis;
-import xyz.oribuin.chatemojis.events.EventPlayerChat;
-import xyz.oribuin.chatemojis.hooks.PAPI;
-import xyz.oribuin.chatemojis.hooks.PluginPlaceholders;
-import xyz.oribuin.chatemojis.utils.TabComplete;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import xyz.oribuin.chatemojis.cmds.CmdEmoji;
+import xyz.oribuin.chatemojis.cmds.OriCommand;
+import xyz.oribuin.chatemojis.hooks.PlaceholderExp;
+import xyz.oribuin.chatemojis.hooks.VaultHook;
+import xyz.oribuin.chatemojis.listeners.PlayerChat;
+import xyz.oribuin.chatemojis.managers.ConfigManager;
+import xyz.oribuin.chatemojis.managers.EmojiManager;
+import xyz.oribuin.chatemojis.managers.MessageManager;
 
 public class ChatEmojis extends JavaPlugin {
 
     private static ChatEmojis instance;
-
-    public static ChatEmojis getInstance() {
-        return instance;
-    }
+    private ConfigManager configManager;
+    private EmojiManager emojiManager;
+    private MessageManager messageManager;
 
     @Override
     public void onEnable() {
         instance = this;
-        PluginManager pm = Bukkit.getPluginManager();
 
-        getCommand("emojis").setExecutor(new CmdEmojis());
-        getCommand("emojis").setTabCompleter(new TabComplete());
-        pm.registerEvents(new EventPlayerChat(), this);
+        // Register commands
+        this.registerCommands(new CmdEmoji(this));
+        // Register Listeners
+        this.registerListeners(new PlayerChat(this));
 
-        if (pm.getPlugin("PlaceholderAPI") == null) {
-            this.getLogger().warning("PlaceholderAPI is not installed, therefor PlaceholderAPI will not work.");
+        // Register Managers
+        this.configManager = new ConfigManager(this);
+        this.emojiManager = new EmojiManager(this);
+        this.messageManager = new MessageManager(this);
+
+        // Register Vault
+        VaultHook vaultHook = new VaultHook(this);
+        vaultHook.setupEconomy();
+        vaultHook.setupPermissions();
+
+        // Register PlaceholderAPI
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PlaceholderExp(this);
         }
-
-        if (PAPI.enabled())
-            new PluginPlaceholders().register();
 
         this.saveDefaultConfig();
-        createFile("emojis.yml");
-        createFile("messages.yml");
-
+        this.reload();
     }
 
-    private void createFile(String fileName) {
-        File file = new File(this.getDataFolder(), fileName);
-        if (!file.exists()) {
-            try (InputStream inStream = this.getResource(fileName)) {
-                Files.copy(inStream, Paths.get(file.getAbsolutePath()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void reload() {
+        this.configManager.reload();
+        this.emojiManager.reload();
+        this.messageManager.reload();
+    }
+
+    private void registerCommands(OriCommand... commands) {
+        for (OriCommand cmd : commands) {
+            cmd.registerCommand();
         }
+    }
+
+    private void registerListeners(Listener... listeners) {
+        for (Listener listener : listeners) {
+            Bukkit.getPluginManager().registerEvents(listener, this);
+        }
+    }
+
+    public EmojiManager getEmojiManager() {
+        return emojiManager;
+    }
+
+    public MessageManager getMessageManager() {
+        return messageManager;
+    }
+
+    public static ChatEmojis getInstance() {
+        return instance;
     }
 }
