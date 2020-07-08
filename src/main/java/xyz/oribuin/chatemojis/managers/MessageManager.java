@@ -1,6 +1,6 @@
 package xyz.oribuin.chatemojis.managers;
 
-import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -9,15 +9,11 @@ import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.hooks.PlaceholderAPIHook;
 import xyz.oribuin.chatemojis.utils.FileUtils;
 import xyz.oribuin.chatemojis.utils.HexUtils;
-import xyz.oribuin.chatemojis.utils.NMSUtil;
 import xyz.oribuin.chatemojis.utils.StringPlaceholders;
 
 import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MessageManager extends Manager {
-    private static final Pattern regex = Pattern.compile("\\{#([A-Fa-f0-9]){6}}");
     private final static String MESSAGE_CONFIG = "messages.yml";
 
     private static FileConfiguration messageConfig;
@@ -40,38 +36,15 @@ public class MessageManager extends Manager {
     public void sendMessage(CommandSender sender, String messageId, StringPlaceholders placeholders) {
 
         if (messageConfig.getString(messageId) == null) {
-            sender.spigot().sendMessage(HexUtils.parseHexColors("{#ff4072}" + messageId + " is null in messages.yml"));
+            sender.spigot().sendMessage(TextComponent.fromLegacyText(HexUtils.colorify("{#ff4072}" + messageId + " is null in messages.yml")));
             return;
         }
 
         if (!messageConfig.getString(messageId).isEmpty()) {
             final String msg = messageConfig.getString("prefix") + placeholders.apply(messageConfig.getString(messageId));
 
-            sender.spigot().sendMessage(HexUtils.parseHexColors(this.parsePlaceholders(sender, msg)));
+            sender.spigot().sendMessage(TextComponent.fromLegacyText(HexUtils.colorify(this.parsePlaceholders(sender, msg))));
         }
-    }
-
-
-    public String parseColors(String message) {
-        String parsed = message;
-
-        if (NMSUtil.getVersionNumber() >= 16) {
-            Matcher matcher = regex.matcher(parsed);
-
-            while (matcher.find()) {
-                String hexString = matcher.group();
-                hexString = hexString.substring(1, hexString.length() - 1);
-
-                final ChatColor hexColor = ChatColor.of(hexString);
-                final String before = parsed.substring(0, matcher.start());
-                final String after = parsed.substring(matcher.end());
-
-                parsed = before + hexColor + after;
-                matcher = regex.matcher(parsed);
-            }
-        }
-
-        return ChatColor.translateAlternateColorCodes('&', parsed);
     }
 
     private String parsePlaceholders(CommandSender sender, String message) {

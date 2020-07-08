@@ -1,26 +1,22 @@
-#
-# Configure all your Emojis in this file.
-#
-# Format:
-# emoji-name:
-#   gui-name: 'name'
-#   check: 'text'
-#   replacement: 'replacement'
-
+# Configure all your Emojis in this file
 emojis:
   shrug:
-    gui-name: '&cShrug Emoji'
+    gui-name: 'Shrug Emoji'
     check: ':shrug:'
-    replacement: '&e¯\_(ツ)_/¯'
+    replacement: "¯\_(ツ)_/¯"
+    creator: 9f7cf461-903f-4ef8-8a88-bdbc49806364
   bear:
-    gui-name: '&cBear Emoji'
+    gui-name: 'Bear Emoji'
     check: ':bear:'
-    replacement: 'ʕ•ᴥ•ʔ'
+    replacement: "ʕ•ᴥ•ʔ"
+    creator: 9f7cf461-903f-4ef8-8a88-bdbc49806364
   star:
-    gui-name: '&cStar Emoji'
+    gui-name: 'Star Emoji'
     check: ':star:'
-    replacement: '&e&l✮'
+    replacement: '✮'
+    creator: 9f7cf461-903f-4ef8-8a88-bdbc49806364
   wave:
-    gui-name: '&cWave Emoji'
+    gui-name: 'Wave Emoji'
     check: ':wave:'
-    replacement: '&d( ﾟ◡ﾟ)/'
+    replacement: '( ﾟ◡ﾟ)/'
+    creator: 9f7cf461-903f-4ef8-8a88-bdbc49806364

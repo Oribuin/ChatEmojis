@@ -1,12 +1,13 @@
 # Change any message to '' to disable the message
-# For 1.16 Users: Use {#HEX} for hex codes
+# For 1.16 Users: Use #HEX for hex codes
 
-prefix: '{#9494ed}ChatEmojis {#cbcbd3}» '
+prefix: '#9494edChatEmojis #cbcbd3» '
 
 # » Command Messages «
 # %emoji% - Name | %check% - Check | %replacement% - Replacement
 created-emoji: '&bYou have created the emoji &e%replacement%&b! Use this by typing &e%check%&b!'
 money-taken: '&bYou have bought the emoji &e%emoji%&b for $&e%money%&b!'
+removed-emoji: '&bYou have deleted the emoji &e%emoji%'
 
 # » Misc Messages «
 reload: '&bYou have reloaded ChatEmojis (%version%)'

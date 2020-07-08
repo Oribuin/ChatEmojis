@@ -1,5 +1,6 @@
 package xyz.oribuin.chatemojis.cmds;
 
+import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.lang.StringUtils;
@@ -10,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import xyz.oribuin.chatemojis.ChatEmojis;
+import xyz.oribuin.chatemojis.guis.MainMenu;
 import xyz.oribuin.chatemojis.hooks.VaultHook;
 import xyz.oribuin.chatemojis.managers.ConfigManager;
 import xyz.oribuin.chatemojis.managers.EmojiManager;
@@ -30,7 +32,7 @@ public class CmdEmoji extends OriCommand {
     public void onCreateCommand(CommandSender sender, String[] args) {
         MessageManager msgM = this.plugin.getMessageManager();
         EmojiManager emojiM = this.plugin.getEmojiManager();
-        ConfigurationSection section = emojiM.getEmojiConfig();
+        ConfigurationSection section = emojiM.getEmojiSec();
 
         // Check permission
         if (!sender.hasPermission("chatemojis.create")) {
@@ -102,7 +104,7 @@ public class CmdEmoji extends OriCommand {
     private void onRemoveCommand(CommandSender sender, String[] args) {
         MessageManager msgM = this.plugin.getMessageManager();
         EmojiManager emojiM = this.plugin.getEmojiManager();
-        ConfigurationSection section = emojiM.getEmojiConfig();
+        ConfigurationSection section = emojiM.getEmojiSec();
 
         // Check permission
         if (!sender.hasPermission("chatemojis.remove")) {
@@ -146,8 +148,7 @@ public class CmdEmoji extends OriCommand {
             }
 
             Player player = (Player) sender;
-            player.spigot().sendMessage(HexUtils.parseHexColors("{#ff4072}Coming Soon"));
-            // TODO: Create menu and open it
+            new MainMenu(plugin, player).openGui();
             return true;
         }
 
@@ -166,9 +167,9 @@ public class CmdEmoji extends OriCommand {
                 return true;
             }
 
-            Player player = (Player) sender;
-            player.spigot().sendMessage(HexUtils.parseHexColors("{#ff4072}Coming Soon"));
-            // TODO: Create menu and open it
+
+            new MainMenu(plugin, mentioned).openGui();
+            sender.spigot().sendMessage(TextComponent.fromLegacyText(HexUtils.colorify(("{#ff4072}Opened menu for " + mentioned.getName()))));
             return true;
         }
 
@@ -225,7 +226,7 @@ public class CmdEmoji extends OriCommand {
             } else if (args[0].equalsIgnoreCase("remove") && sender.hasPermission("chatemojis.remove")) {
                 List<String> emojiNames = new ArrayList<>();
 
-                this.plugin.getEmojiManager().getEmojiConfig().getKeys(false).forEach(emoji -> emojiNames.add(StringUtils.capitalize(emoji)));
+                this.plugin.getEmojiManager().getEmojiSec().getKeys(false).forEach(emoji -> emojiNames.add(StringUtils.capitalize(emoji)));
 
                 StringUtil.copyPartialMatches(args[1].toLowerCase(), emojiNames, suggestions);
             }

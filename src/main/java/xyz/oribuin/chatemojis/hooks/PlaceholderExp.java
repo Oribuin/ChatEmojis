@@ -2,12 +2,8 @@ package xyz.oribuin.chatemojis.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
-
-import java.io.File;
 
 public class PlaceholderExp extends PlaceholderExpansion {
     private final ChatEmojis plugin;
@@ -18,14 +14,17 @@ public class PlaceholderExp extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String placeholder) {
-        ConfigurationSection emojiSec = this.plugin.getEmojiManager().getEmojiConfig();
+        ConfigurationSection emojiSec = this.plugin.getEmojiManager().getEmojiSec();
         if (emojiSec == null) return null;
 
         if (placeholder == null)
             return null;
 
-        if (placeholder.equalsIgnoreCase("total"))
+        if (placeholder.equalsIgnoreCase("unlocked"))
             return String.valueOf(emojiSec.getKeys(false).stream().filter(emoji -> player.hasPermission("chatemojis.emoji." + emoji)).count());
+
+        if (placeholder.equalsIgnoreCase("total"))
+            return String.valueOf(emojiSec.getKeys(false).size());
 
         return null;
     }

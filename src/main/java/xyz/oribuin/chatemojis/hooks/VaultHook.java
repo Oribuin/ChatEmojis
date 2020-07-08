@@ -15,6 +15,14 @@ public class VaultHook extends Manager {
         super(plugin);
     }
 
+    public static Economy getVaultEco() {
+        return vaultEco;
+    }
+
+    public static Permission getPermission() {
+        return permission;
+    }
+
     @Override
     public void reload() {
         // Unused
@@ -40,13 +48,5 @@ public class VaultHook extends Manager {
             return;
 
         permission = rsp.getProvider();
-    }
-
-    public static Economy getVaultEco() {
-        return vaultEco;
-    }
-
-    public static Permission getPermission() {
-        return permission;
     }
 }
