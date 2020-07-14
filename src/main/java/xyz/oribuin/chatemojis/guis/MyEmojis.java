@@ -25,15 +25,15 @@ import xyz.oribuin.chatemojis.utils.StringPlaceholders;
 
 import java.util.*;
 
-public class MainMenu extends Menu {
+public class MyEmojis extends Menu {
 
     private final ChatEmojis plugin;
     private final GuiFramework guiFramework;
     private final Player player;
     private GuiContainer guiContainer;
 
-    public MainMenu(ChatEmojis plugin, Player player) {
-        super(plugin, "main-menu");
+    public MyEmojis(ChatEmojis plugin, Player player) {
+        super(plugin, "my-emojis");
         this.plugin = plugin;
         this.guiFramework = GuiFramework.instantiate(this.plugin);
         this.player = player;
@@ -97,7 +97,7 @@ public class MainMenu extends Menu {
                     .setGlowing(getMenuConfig().getBoolean("forward-page.glowing"))
                     .setHiddenReplacement(this.getItem("border-item"))
                     .setClickAction(event -> {
-                        if (getMenuConfig().getBoolean("use-sound")) {
+                        if (getMenuConfig().getBoolean("forward-sound")) {
                             player.playSound(player.getLocation(), Sound.valueOf(getMenuConfig().getString("click-sound")), 100, 1);
                         }
                         return ClickAction.PAGE_FORWARDS;
@@ -105,36 +105,8 @@ public class MainMenu extends Menu {
             );
         }
 
-        // Create the my emojis item
-        if (this.getMenuConfig().getString("my-emojis") != null) {
-
-            if (!this.getMenuConfig().getBoolean("my-emojis.enabled")) {
-                guiScreen.addItemStackAt(this.getMenuConfig().getInt("my-emojis.slot"), getItem("border-item"));
-                return null;
-            }
-
-            List<String> lore = new ArrayList<>();
-            for (String string : this.getMenuConfig().getStringList("my-emojis.lore"))
-                lore.add(this.format(string, StringPlaceholders.empty()));
-
-            guiScreen.addButtonAt(getMenuConfig().getInt("my-emojis.slot"), GuiFactory.createButton()
-                    .setName(this.format(getMenuConfig().getString("my-emojis.name"), StringPlaceholders.empty()))
-                    .setLore(lore)
-                    .setIcon(Material.valueOf(getMenuConfig().getString("my-emojis.material")))
-                    .setGlowing(getMenuConfig().getBoolean("my-emojis.glowing"))
-                    .setClickAction(event -> {
-                        if (getMenuConfig().getBoolean("use-sound")) {
-                            player.playSound(player.getLocation(), Sound.valueOf(getMenuConfig().getString("click-sound")), 100, 1);
-                        }
-
-                        //new MyEmojis(plugin, player).openGui();
-                        return ClickAction.NOTHING;
-                    })
-            );
-        }
-
-        // Create emojis
         List<String> emojis = new ArrayList<>(config.getKeys(false));
+
         guiScreen.setPaginatedSection(GuiFactory.createScreenSection(this.emojiSlots()), emojis.size(), (pageNumber, startIndex, endIndex) -> {
             GuiPageContentsResult results = GuiFactory.createPageContentsResult();
             for (int i = startIndex; i < Math.min(endIndex, emojis.size()); i++) {
@@ -197,7 +169,9 @@ public class MainMenu extends Menu {
                             return ClickAction.CLOSE;
                         });
 
-                results.addPageContent(guiButton);
+                if (player.getUniqueId().equals(UUID.fromString(emojiCreator))) {
+                    results.addPageContent(guiButton);
+                }
             }
 
             return results;

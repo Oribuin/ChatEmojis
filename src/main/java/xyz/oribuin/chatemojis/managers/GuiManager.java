@@ -3,7 +3,9 @@ package xyz.oribuin.chatemojis.managers;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.guis.MainMenu;
 import xyz.oribuin.chatemojis.guis.Menu;
+import xyz.oribuin.chatemojis.guis.MyEmojis;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class GuiManager extends Manager {
@@ -14,7 +16,10 @@ public class GuiManager extends Manager {
     }
 
     public void registerMenus() {
-        this.menus.add(new MainMenu(plugin, null));
+        this.menus.addAll(Arrays.asList(
+                new MainMenu(plugin, null),
+                new MyEmojis(plugin, null))
+        );
     }
 
     @Override
