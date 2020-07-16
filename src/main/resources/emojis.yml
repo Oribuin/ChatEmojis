@@ -3,7 +3,7 @@ emojis:
   shrug:
     gui-name: 'Shrug Emoji'
     check: ':shrug:'
-    replacement: "¯\_(ツ)_/¯"
+    replacement: '¯\_(ツ)_/¯'
     creator: 9f7cf461-903f-4ef8-8a88-bdbc49806364
   bear:
     gui-name: 'Bear Emoji'

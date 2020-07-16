@@ -9,6 +9,8 @@ import xyz.oribuin.chatemojis.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 public class EmojiManager extends Manager {
 
@@ -50,6 +52,14 @@ public class EmojiManager extends Manager {
 
     public FileConfiguration getEmojiConfig() {
         return this.emojiConfig;
+    }
+
+    public int getEmojiCreated(Player player) {
+        return (int) getEmojiSec().getKeys(false).stream().filter(emoji -> player.getUniqueId().equals(UUID.fromString(Objects.requireNonNull(getEmojiSec().getString(emoji + ".creator"))))).count();
+    }
+    
+    public int getEmojiTotal() {
+        return getEmojiSec().getKeys(false).size();
     }
 
     /**

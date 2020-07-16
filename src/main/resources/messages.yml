@@ -1,5 +1,8 @@
 # Change any message to '' to disable the message
-# For 1.16 Users: Use #HEX for hex codes
+# For 1.16 Users:
+# Normal Hex: #HEX
+# Gradient: <g:#hex:#hex:#hex...ect>
+# Rainbow: <rainbow:<0.1-1.0> (Number is not required)
 
 prefix: '#9494edChatEmojis #cbcbd3» '
 

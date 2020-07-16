@@ -28,21 +28,26 @@ public abstract class OriCommand implements TabExecutor {
         }
     }
 
+    public abstract void executeCommand(CommandSender sender, String[] args);
+
     // Register Command
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+        this.executeCommand(sender, args);
         return true;
     }
 
 
     // Register command tab complete
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
         return null;
     }
 
     // Get Command Name
     public String getName() {
         return commandName;
+    }
+
+    public Command getCommand() {
+         return plugin.getCommand(this.getName());
     }
 }

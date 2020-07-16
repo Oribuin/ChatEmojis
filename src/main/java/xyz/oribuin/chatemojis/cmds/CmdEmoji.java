@@ -5,7 +5,6 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -129,27 +128,26 @@ public class CmdEmoji extends OriCommand {
         emojiM.removeEmoji(emojiName);
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void executeCommand(CommandSender sender, String[] args) {
         MessageManager msgM = this.plugin.getMessageManager();
 
-        if (!command.getName().equalsIgnoreCase(this.getName()))
-            return true;
+        if (!this.getCommand().getName().equals(this.getName()))
+            return;
 
         if (args.length == 0 || args.length == 1 && args[0].equalsIgnoreCase("menu")) {
             if (!(sender instanceof Player)) {
                 msgM.sendMessage(sender, "player-only");
-                return true;
+                return;
             }
 
             if (!(sender.hasPermission("chatemojis.menu"))) {
                 msgM.sendMessage(sender, "invalid-permission");
-                return true;
+                return;
             }
 
             Player player = (Player) sender;
             new MainMenu(plugin, player).openGui();
-            return true;
+            return;
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("menu")) {
@@ -157,20 +155,20 @@ public class CmdEmoji extends OriCommand {
 
             if (!(sender.hasPermission("chatemojis.menu.other"))) {
                 msgM.sendMessage(sender, "invalid-permission");
-                return true;
+                return;
             }
 
             // Check if mentioned is null, offline, vanished
             if (mentioned == null || !mentioned.isOnline() || mentioned.hasMetadata("vanished")) {
                 // Send invalid player
                 msgM.sendMessage(sender, "invalid-player");
-                return true;
+                return;
             }
 
 
             new MainMenu(plugin, mentioned).openGui();
             sender.spigot().sendMessage(TextComponent.fromLegacyText(HexUtils.colorify(("{#ff4072}Opened menu for " + mentioned.getName()))));
-            return true;
+            return;
         }
 
         switch (args[0].toLowerCase()) {
@@ -187,11 +185,11 @@ public class CmdEmoji extends OriCommand {
                 msgM.sendMessage(sender, "unknown-command");
         }
 
-        return true;
+        return;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
         if (!command.getName().equalsIgnoreCase(this.getName()))
             return Collections.emptyList();
 

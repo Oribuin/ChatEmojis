@@ -5,6 +5,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
 
+import java.util.Objects;
+import java.util.UUID;
+
 public class PlaceholderExp extends PlaceholderExpansion {
     private final ChatEmojis plugin;
 
@@ -24,7 +27,10 @@ public class PlaceholderExp extends PlaceholderExpansion {
             return String.valueOf(emojiSec.getKeys(false).stream().filter(emoji -> player.hasPermission("chatemojis.emoji." + emoji)).count());
 
         if (placeholder.equalsIgnoreCase("total"))
-            return String.valueOf(emojiSec.getKeys(false).size());
+            return String.valueOf(plugin.getEmojiManager().getEmojiTotal());
+
+        if (placeholder.equals("created"))
+            return String.valueOf(plugin.getEmojiManager().getEmojiCreated(player));
 
         return null;
     }

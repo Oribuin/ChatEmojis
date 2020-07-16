@@ -1,10 +1,8 @@
 package xyz.oribuin.chatemojis;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import xyz.oribuin.chatemojis.cmds.CmdEmoji;
 import xyz.oribuin.chatemojis.cmds.OriCommand;
 import xyz.oribuin.chatemojis.hooks.PlaceholderExp;
@@ -29,6 +27,7 @@ public class ChatEmojis extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
         instance = this;
 
         // Register commands
@@ -52,7 +51,7 @@ public class ChatEmojis extends JavaPlugin {
             new PlaceholderExp(this).register();
         }
 
-        guiManager.registerMenus();
+        this.guiManager.registerMenus();
         this.saveDefaultConfig();
         this.reload();
     }

@@ -7,7 +7,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import xyz.oribuin.chatemojis.ChatEmojis;
-import xyz.oribuin.chatemojis.utils.HexUtils;
 
 public class PlayerChat implements Listener {
 

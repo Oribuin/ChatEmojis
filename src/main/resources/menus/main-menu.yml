@@ -1,6 +1,4 @@
 # Configure the Main Menu with all the emojis listed in it in this file
-#
-# Hex Colors do not work on GUIs
 
 # Supports PlaceholderAPI
 menu-name: 'ChatEmojis Plugin | %chatemojis_total%'
@@ -31,10 +29,20 @@ emoji-item:
     - 'say Hello, %player%!'
 
 my-emojis:
+  # Should the 'My Emojis' Menu be enabled
+  enabled: true
   name: '&e« &bMy Emojis »'
   material: 'DIAMOND'
   slot: 49
   glowing: true
+  lore: []
+  item-flags: []
+
+no-emojis:
+  name: '&cSorry! There are no emojis defined!'
+  material: 'BARRIER'
+  slot: 22
+  glowing: false
   lore: []
   item-flags: []
 

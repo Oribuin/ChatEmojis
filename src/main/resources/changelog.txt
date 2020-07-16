@@ -11,6 +11,15 @@ Changelog:
     • Changed 'emojis.emoji.name' to 'emojis.emoji.gui-name' in emojis.yml
     • Added ability to change default formatting of emoji creation
     • Added ability to have disable messages from messages.yml
+    • Put GUIs in a their own Files
+    • Added "My Emojis" Menu
+    • Added ability to define emoji creators
+    • Added "No Emojis Created" to GUIs
+    • Added new placeholders (Requires PlaceholderAPI):
+       » Placeholders
+        • %chatemojis_unlocked% - Number of emojis you have permission for.
+        • %chatemojis_created% - Number of emojis you have created
+    • Removed Chat colors from emojis as they'd conflict with other plugins
 
   » Code upgrades
     • Cleaned up a lot of 5 month old code
@@ -19,7 +28,4 @@ Changelog:
     • Added Vault support
     • Added abstract command class
 
-TO-DO List:
-    • Put GUIs in a their own Files
-    • Added "My Emojis" on config
-    • Create GUI
+TO-DO List: emptyList()

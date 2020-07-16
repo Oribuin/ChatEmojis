@@ -47,21 +47,50 @@ public class MyEmojis extends Menu {
         this.guiContainer.openFor(player);
     }
 
-    private GuiScreen mainScreen() {
+    private void buildGui() {
+
+        this.guiContainer = GuiFactory.createContainer();
+
         EmojiManager emojiManager = this.plugin.getEmojiManager();
 
         GuiScreen guiScreen = GuiFactory.createScreen(this.guiContainer, GuiSize.ROWS_SIX)
                 .setTitle(HexUtils.colorify(this.getValue("menu-name")));
 
+
         // Define configuration files
         ConfigurationSection config = emojiManager.getEmojiSec();
         if (config == null)
-            return null;
+            return;
 
         this.borderSlots().forEach(integer -> guiScreen.addItemStackAt(integer, this.getItem("border-item")));
 
-        // Create my-emojis item
-        guiScreen.addItemStackAt(getMenuConfig().getInt("my-emojis.slot"), getItem("my-emojis"));
+        // Create go-back item
+        if (this.getMenuConfig().getString("go-back") != null) {
+            List<String> lore = new ArrayList<>();
+            for (String string : this.getMenuConfig().getStringList("go-back.lore"))
+                lore.add(this.format(string, StringPlaceholders.empty()));
+
+            guiScreen.addButtonAt(getMenuConfig().getInt("go-back.slot"), GuiFactory.createButton()
+                    .setName(this.format(getMenuConfig().getString("go-back.name"), StringPlaceholders.empty()))
+                    .setLore(lore)
+                    .setIcon(Material.valueOf(getMenuConfig().getString("go-back.material")))
+                    .setGlowing(getMenuConfig().getBoolean("go-back.glowing"))
+                    .setHiddenReplacement(this.getItem("border-item"))
+                    .setClickAction(event -> {
+                        if (getMenuConfig().getBoolean("use-sound")) {
+                            player.playSound(player.getLocation(), Sound.valueOf(getMenuConfig().getString("click-sound")), 100, 1);
+                        }
+
+                        new MainMenu(plugin, (Player) event.getWhoClicked()).openGui();
+                        return ClickAction.NOTHING;
+                    })
+            );
+        }
+
+        // Create no emojis item if they do not have any emojis
+        if (emojiManager.getEmojiCreated(player) == 0) {
+            guiScreen.addItemStackAt(getMenuConfig().getInt("no-emojis.slot"), getItem("no-emojis"));
+        }
 
         // Create Back page item
         if (this.getMenuConfig().getString("back-page") != null) {
@@ -169,7 +198,7 @@ public class MyEmojis extends Menu {
                             return ClickAction.CLOSE;
                         });
 
-                if (player.getUniqueId().equals(UUID.fromString(emojiCreator))) {
+                if (emojiCreator != null && player.getUniqueId().equals(UUID.fromString(Objects.requireNonNull(config.getString(emoji + ".creator"))))) {
                     results.addPageContent(guiButton);
                 }
             }
@@ -177,7 +206,12 @@ public class MyEmojis extends Menu {
             return results;
         });
 
-        return guiScreen;
+        this.guiContainer.addScreen(guiScreen);
+        this.guiFramework.getGuiManager().registerGui(guiContainer);
+    }
+
+    private boolean isInvalid() {
+        return this.guiContainer == null || !this.guiFramework.getGuiManager().getActiveGuis().contains(this.guiContainer);
     }
 
     private ItemStack getItem(String name) {
@@ -215,18 +249,6 @@ public class MyEmojis extends Menu {
 
     public String format(String msg, StringPlaceholders placeholders) {
         return HexUtils.colorify(placeholders.apply(PlaceholderAPIHook.apply(player, msg)));
-    }
-
-    private void buildGui() {
-
-        this.guiContainer = GuiFactory.createContainer();
-
-        this.guiContainer.addScreen(this.mainScreen());
-        this.guiFramework.getGuiManager().registerGui(guiContainer);
-    }
-
-    private boolean isInvalid() {
-        return this.guiContainer == null || !this.guiFramework.getGuiManager().getActiveGuis().contains(this.guiContainer);
     }
 
     private List<Integer> borderSlots() {

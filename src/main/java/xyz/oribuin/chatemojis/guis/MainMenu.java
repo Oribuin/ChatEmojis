@@ -47,18 +47,63 @@ public class MainMenu extends Menu {
         this.guiContainer.openFor(player);
     }
 
-    private GuiScreen mainScreen() {
+    private ItemStack getItem(String name) {
+        ItemStack itemStack = new ItemStack(Material.valueOf(this.getMenuConfig().getString(name + ".material")));
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null)
+            return new ItemStack(Material.AIR);
+
+        itemMeta.setDisplayName(this.getValue(name + ".name"));
+
+        List<String> lore = new ArrayList<>();
+        for (String string : this.getMenuConfig().getStringList(name + ".lore"))
+            lore.add(this.format(string, StringPlaceholders.empty()));
+        itemMeta.setLore(lore);
+
+        if (this.getMenuConfig().getBoolean(name + ".glowing")) {
+            itemMeta.addEnchant(Enchantment.MENDING, 1, true);
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+
+        for (String itemFlag : this.getMenuConfig().getStringList(name + ".item-flags")) {
+            itemMeta.addItemFlags(ItemFlag.valueOf(itemFlag));
+        }
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    public String getValue(String configValue) {
+        if (this.getMenuConfig().getString(configValue) == null)
+            // Today's lesson of what not to do in Java: DONT PUT "NULL" LIKE I DID, THAT IS WRONG
+            return null;
+
+        return HexUtils.colorify(PlaceholderAPIHook.apply(player, this.getMenuConfig().getString(configValue)));
+    }
+
+    public String format(String msg, StringPlaceholders placeholders) {
+        return HexUtils.colorify(placeholders.apply(PlaceholderAPIHook.apply(player, msg)));
+    }
+
+    private void buildGui() {
+
+        this.guiContainer = GuiFactory.createContainer();
+
         EmojiManager emojiManager = this.plugin.getEmojiManager();
 
         GuiScreen guiScreen = GuiFactory.createScreen(this.guiContainer, GuiSize.ROWS_SIX)
                 .setTitle(HexUtils.colorify(this.getValue("menu-name")));
 
+
         // Define configuration files
         ConfigurationSection config = emojiManager.getEmojiSec();
         if (config == null)
-            return null;
+            return;
 
         this.borderSlots().forEach(integer -> guiScreen.addItemStackAt(integer, this.getItem("border-item")));
+
+        if (emojiManager.getEmojiTotal() == 0) {
+            guiScreen.addItemStackAt(getMenuConfig().getInt("no-emojis.slot"), getItem("no-emojis"));
+        }
 
         // Create my-emojis item
         guiScreen.addItemStackAt(getMenuConfig().getInt("my-emojis.slot"), getItem("my-emojis"));
@@ -110,7 +155,7 @@ public class MainMenu extends Menu {
 
             if (!this.getMenuConfig().getBoolean("my-emojis.enabled")) {
                 guiScreen.addItemStackAt(this.getMenuConfig().getInt("my-emojis.slot"), getItem("border-item"));
-                return null;
+                return;
             }
 
             List<String> lore = new ArrayList<>();
@@ -127,7 +172,7 @@ public class MainMenu extends Menu {
                             player.playSound(player.getLocation(), Sound.valueOf(getMenuConfig().getString("click-sound")), 100, 1);
                         }
 
-                        //new MyEmojis(plugin, player).openGui();
+                        new MyEmojis(plugin, player).openGui();
                         return ClickAction.NOTHING;
                     })
             );
@@ -203,51 +248,7 @@ public class MainMenu extends Menu {
             return results;
         });
 
-        return guiScreen;
-    }
-
-    private ItemStack getItem(String name) {
-        ItemStack itemStack = new ItemStack(Material.valueOf(this.getMenuConfig().getString(name + ".material")));
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null)
-            return new ItemStack(Material.AIR);
-
-        itemMeta.setDisplayName(this.getValue(name + ".name"));
-
-        List<String> lore = new ArrayList<>();
-        for (String string : this.getMenuConfig().getStringList(name + ".lore"))
-            lore.add(this.format(string, StringPlaceholders.empty()));
-        itemMeta.setLore(lore);
-
-        if (this.getMenuConfig().getBoolean(name + ".glowing")) {
-            itemMeta.addEnchant(Enchantment.MENDING, 1, true);
-            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
-
-        for (String itemFlag : this.getMenuConfig().getStringList(name + ".item-flags")) {
-            itemMeta.addItemFlags(ItemFlag.valueOf(itemFlag));
-        }
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
-    }
-
-    public String getValue(String configValue) {
-        if (this.getMenuConfig().getString(configValue) == null)
-            // Today's lesson of what not to do in Java: DONT PUT "NULL" LIKE I DID, THAT IS WRONG
-            return null;
-
-        return HexUtils.colorify(PlaceholderAPIHook.apply(player, this.getMenuConfig().getString(configValue)));
-    }
-
-    public String format(String msg, StringPlaceholders placeholders) {
-        return HexUtils.colorify(placeholders.apply(PlaceholderAPIHook.apply(player, msg)));
-    }
-
-    private void buildGui() {
-
-        this.guiContainer = GuiFactory.createContainer();
-
-        this.guiContainer.addScreen(this.mainScreen());
+        this.guiContainer.addScreen(guiScreen);
         this.guiFramework.getGuiManager().registerGui(guiContainer);
     }
 
