@@ -17,7 +17,7 @@ public class PlayerChat implements Listener {
 
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent event) {
         ConfigurationSection emojiSec = this.plugin.getEmojiManager().getEmojiSec();
         Player player = event.getPlayer();
