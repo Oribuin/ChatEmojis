@@ -32,27 +32,6 @@ public final class FileUtils {
         }
     }
 
-    public static void createFile(Plugin plugin, File file) {
-        if (!file.exists()) {
-
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdir();
-            }
-
-            try (InputStream inStream = plugin.getResource(file.getName())) {
-                if (inStream == null) {
-                    file.createNewFile();
-                    return;
-                }
-
-                Files.copy(inStream, Paths.get(file.getAbsolutePath()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
     public static void createMenuFile(Plugin plugin, File file) {
         if (!file.exists()) {
             if (!file.getParentFile().exists()) {
