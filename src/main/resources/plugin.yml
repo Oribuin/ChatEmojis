@@ -8,6 +8,7 @@ website: https://oribuin.xyz/
 softdepend:
   - PlaceholderAPI
   - Vault
+  - PlotSquared
 
 commands:
   chatemoji:
@@ -26,6 +27,8 @@ permissions:
       - chatemojis.menu.other
       - chatemojis.reload
       - chatemojis.create
+      - chatemojis.remove
+      - chatemojis.emojis.*
 
   chatemojis.menu:
     description: Open the /emojis menu.

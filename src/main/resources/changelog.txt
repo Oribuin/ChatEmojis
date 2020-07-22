@@ -19,7 +19,8 @@ Changelog:
        » Placeholders
         • %chatemojis_unlocked% - Number of emojis you have permission for.
         • %chatemojis_created% - Number of emojis you have created
-    • Removed Chat colors from emojis as they'd conflict with other plugins
+    • Removed Chat colors from emojis as they'd conflict with other plugins and they could be used to have chatcolored chat
+    • Redesigned spigot page
 
   » Code upgrades
     • Cleaned up a lot of 5 month old code
@@ -27,5 +28,3 @@ Changelog:
     • Created API Friendly methods
     • Added Vault support
     • Added abstract command class
-
-TO-DO List: emptyList()

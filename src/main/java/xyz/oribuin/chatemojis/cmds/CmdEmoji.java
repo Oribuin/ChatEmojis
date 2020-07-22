@@ -184,8 +184,6 @@ public class CmdEmoji extends OriCommand {
             default:
                 msgM.sendMessage(sender, "unknown-command");
         }
-
-        return;
     }
 
     @Override

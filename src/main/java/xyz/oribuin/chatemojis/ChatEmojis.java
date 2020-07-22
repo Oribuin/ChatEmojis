@@ -40,7 +40,6 @@ public class ChatEmojis extends JavaPlugin {
         this.emojiManager = new EmojiManager(this);
         this.guiManager = new GuiManager(this);
         this.messageManager = new MessageManager(this);
-
         // Register Vault
         VaultHook vaultHook = new VaultHook(this);
         vaultHook.setupEconomy();
