@@ -2,10 +2,7 @@ package xyz.oribuin.chatemojis.guis;
 
 import dev.rosewood.guiframework.GuiFactory;
 import dev.rosewood.guiframework.GuiFramework;
-import dev.rosewood.guiframework.gui.ClickAction;
-import dev.rosewood.guiframework.gui.GuiButton;
-import dev.rosewood.guiframework.gui.GuiContainer;
-import dev.rosewood.guiframework.gui.GuiSize;
+import dev.rosewood.guiframework.gui.*;
 import dev.rosewood.guiframework.gui.screen.GuiPageContentsResult;
 import dev.rosewood.guiframework.gui.screen.GuiScreen;
 import org.bukkit.Bukkit;

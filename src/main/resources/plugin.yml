@@ -8,15 +8,13 @@ website: https://oribuin.xyz/
 softdepend:
   - PlaceholderAPI
   - Vault
-  - PlotSquared
-
 commands:
   chatemoji:
     description: Main plugin command.
-    usage: /chatemoji
+    usage: /<usage>
     aliases:
       - chatemojis
-      - emojis
+      - emoji
 
 permissions:
   chatemojis.*:
@@ -30,20 +28,8 @@ permissions:
       - chatemojis.remove
       - chatemojis.emojis.*
 
-  chatemojis.menu:
-    description: Open the /emojis menu.
-    default: op
-
   chatemojis.menu.other:
     description: Open the /emojis menu for another player.
     default: op
     children:
       - chatemojis.menu
-
-  chatemojis.reload:
-    description: Reload the plugin's configuration files.
-    default: op
-
-  chatemojis.create:
-    description: Create an emoji.
-    default: op
