@@ -27,13 +27,13 @@ dependencies {
     shadow 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     shadow 'me.clip:placeholderapi:2.10.6'
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
-    implementation 'dev.esophose:guiframework:1.1.0'
+    implementation 'dev.rosewood:guiframework:1.1.1'
     //compileOnly 'com.plotsquared:PlotSquared-Core:5.12.2'
 }
 
 shadowJar {
     mergeServiceFiles()
-    relocate('dev.esophose.guiframework', 'xyz.oribuin.chatemojis.libs.guiframework')
+    relocate('dev.rosewood.guiframework', 'xyz.oribuin.chatemojis.libs.guiframework')
     archiveName 'ChatEmojis-' + project.property("version") + ".jar"
 }
 
