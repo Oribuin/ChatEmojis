@@ -2,7 +2,10 @@ package xyz.oribuin.chatemojis.guis;
 
 import dev.rosewood.guiframework.GuiFactory;
 import dev.rosewood.guiframework.GuiFramework;
-import dev.rosewood.guiframework.gui.*;
+import dev.rosewood.guiframework.gui.ClickAction;
+import dev.rosewood.guiframework.gui.GuiButton;
+import dev.rosewood.guiframework.gui.GuiContainer;
+import dev.rosewood.guiframework.gui.GuiSize;
 import dev.rosewood.guiframework.gui.screen.GuiPageContentsResult;
 import dev.rosewood.guiframework.gui.screen.GuiScreen;
 import org.bukkit.Bukkit;
@@ -199,7 +202,7 @@ public class MainMenu extends Menu {
                 }
 
                 StringPlaceholders placeholders = StringPlaceholders.builder()
-                        .addPlaceholder("emoji_name", emoji)
+                        .addPlaceholder("emoji_name", emojiName)
                         .addPlaceholder("emoji_creator", emojiCreator)
                         .addPlaceholder("emoji_check", emojiCheck)
                         .addPlaceholder("emoji_replacement", emojiReplacement)
@@ -211,7 +214,7 @@ public class MainMenu extends Menu {
                     lore.add(HexUtils.colorify(this.format(string, placeholders)));
 
                 GuiButton guiButton = GuiFactory.createButton()
-                        .setName(HexUtils.colorify(this.format(emojiName, placeholders)))
+                        .setName(HexUtils.colorify(this.format(this.getMenuConfig().getString("emoji-item.name"), placeholders)))
                         .setLore(lore)
                         .setIcon(Material.valueOf(getMenuConfig().getString("emoji-item.material")))
                         .setGlowing(getMenuConfig().getBoolean("emoji-item.glowing"))
