@@ -1,4 +1,4 @@
-package xyz.oribuin.chatemojis.guis;
+package xyz.oribuin.chatemojis.menu;
 
 import dev.rosewood.guiframework.GuiFactory;
 import dev.rosewood.guiframework.GuiFramework;
@@ -18,10 +18,11 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.oribuin.chatemojis.ChatEmojis;
-import xyz.oribuin.chatemojis.hooks.PlaceholderAPIHook;
-import xyz.oribuin.chatemojis.managers.EmojiManager;
-import xyz.oribuin.chatemojis.utils.HexUtils;
-import xyz.oribuin.chatemojis.utils.StringPlaceholders;
+import xyz.oribuin.chatemojis.hook.PlaceholderAPIHook;
+import xyz.oribuin.chatemojis.manager.EmojiManager;
+import xyz.oribuin.chatemojis.util.FileUtils;
+import xyz.oribuin.chatemojis.util.HexUtils;
+import xyz.oribuin.chatemojis.util.StringPlaceholders;
 
 import java.util.*;
 
@@ -30,20 +31,21 @@ public class MainMenu extends Menu {
     private final ChatEmojis plugin;
     private final GuiFramework guiFramework;
     private final Player player;
-    private GuiContainer guiContainer;
+    private final GuiContainer guiContainer;
 
     public MainMenu(ChatEmojis plugin, Player player) {
         super(plugin, "main-menu");
         this.plugin = plugin;
         this.guiFramework = GuiFramework.instantiate(this.plugin);
         this.player = player;
-        this.guiContainer = null;
+        this.guiContainer = GuiFactory.createContainer();
 
     }
 
     public void openGui() {
         if (this.isInvalid())
             this.buildGui();
+
         this.guiContainer.openFor(player);
     }
 
@@ -80,13 +82,14 @@ public class MainMenu extends Menu {
         return HexUtils.colorify(PlaceholderAPIHook.apply(player, this.getMenuConfig().getString(configValue)));
     }
 
-    public String format(String msg, StringPlaceholders placeholders) {
-        return HexUtils.colorify(placeholders.apply(PlaceholderAPIHook.apply(player, msg)));
+    private void buildGui() {
+        FileUtils.createMenuFile(plugin, "main-menu");
+        System.out.println(menu() == null);
+        guiContainer.addScreen(menu());
+        guiFramework.getGuiManager().registerGui(guiContainer);
     }
 
-    private void buildGui() {
-
-        this.guiContainer = GuiFactory.createContainer();
+    private GuiScreen menu() {
 
         EmojiManager emojiManager = this.plugin.getEmojiManager();
 
@@ -97,7 +100,7 @@ public class MainMenu extends Menu {
         // Define configuration files
         ConfigurationSection config = emojiManager.getEmojiSec();
         if (config == null)
-            return;
+            return null;
 
         this.borderSlots().forEach(integer -> guiScreen.addItemStackAt(integer, this.getItem("border-item")));
 
@@ -155,7 +158,7 @@ public class MainMenu extends Menu {
 
             if (!this.getMenuConfig().getBoolean("my-emojis.enabled")) {
                 guiScreen.addItemStackAt(this.getMenuConfig().getInt("my-emojis.slot"), getItem("border-item"));
-                return;
+                return null;
             }
 
             List<String> lore = new ArrayList<>();
@@ -223,22 +226,14 @@ public class MainMenu extends Menu {
                                 player.playSound(player.getLocation(), Sound.valueOf(getMenuConfig().getString("click-sound")), 100, 1);
                             }
 
-                            StringPlaceholders plho = StringPlaceholders.builder()
+                            StringPlaceholders.Builder plho = StringPlaceholders.builder()
                                     .addPlaceholder("emoji_name", emoji)
                                     .addPlaceholder("emoji_creator", emojiCreator)
                                     .addPlaceholder("emoji_check", emojiCheck)
                                     .addPlaceholder("emoji_replacement", emojiReplacement)
-                                    .addPlaceholder("player", event.getWhoClicked().getName())
-                                    .build();
+                                    .addPlaceholder("player", event.getWhoClicked().getName());
 
-
-                            if (!getMenuConfig().getStringList("emoji-item.player-commands").isEmpty()) {
-                                getMenuConfig().getStringList("emoji-item.player-commands").forEach(s -> player.performCommand(this.format(s, plho)));
-                            }
-
-                            if (!getMenuConfig().getStringList("emoji-item.console-commands").isEmpty()) {
-                                getMenuConfig().getStringList("emoji-item.console-commands").forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.format(s, plho)));
-                            }
+                            this.executeCommands(player, plho);
                             return ClickAction.CLOSE;
                         });
 
@@ -248,8 +243,8 @@ public class MainMenu extends Menu {
             return results;
         });
 
-        this.guiContainer.addScreen(guiScreen);
-        this.guiFramework.getGuiManager().registerGui(guiContainer);
+        return guiScreen;
+
     }
 
     private boolean isInvalid() {
@@ -277,6 +272,15 @@ public class MainMenu extends Menu {
         for (int i = 37; i <= 43; i++) emojiSlots.add(i);
 
         return emojiSlots;
+    }
+
+    private void executeCommands(Player player,  StringPlaceholders.Builder placeholders) {
+        getMenuConfig().getStringList("emoji-item.player-commands").forEach(s -> player.performCommand(format(s, placeholders.addPlaceholder("player", player.getName()).build())));
+        getMenuConfig().getStringList("emoji-item.console-commands").forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), format(s, placeholders.addPlaceholder("player", player.getName()).build())));
+    }
+
+    private String format(String text, StringPlaceholders placeholders) {
+        return HexUtils.colorify(PlaceholderAPIHook.apply(player, placeholders.apply(text)));
     }
 }
 

@@ -1,4 +1,4 @@
-package xyz.oribuin.chatemojis.managers;
+package xyz.oribuin.chatemojis.manager;
 
 import xyz.oribuin.chatemojis.ChatEmojis;
 

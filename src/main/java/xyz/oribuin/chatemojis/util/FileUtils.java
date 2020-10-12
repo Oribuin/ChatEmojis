@@ -1,4 +1,4 @@
-package xyz.oribuin.chatemojis.utils;
+package xyz.oribuin.chatemojis.util;
 
 import org.bukkit.plugin.Plugin;
 
@@ -32,19 +32,28 @@ public final class FileUtils {
         }
     }
 
-    public static void createMenuFile(Plugin plugin, File file) {
-        if (!file.exists()) {
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdir();
-            }
+    /**
+     * Create a the menu file in a plugin in the menu folder.
+     *
+     * @param plugin   The plugin the file is being created in
+     * @param fileName The name of the menu file because created
+     */
+    public static void createMenuFile(Plugin plugin, String fileName) {
+        File dir = new File(plugin.getDataFolder(), "menus");
+        File file = new File(dir, fileName + ".yml");
 
-            try (InputStream inputStream = plugin.getResource("menus" + File.separator + file.getName())) {
-                if (inputStream == null) {
+        if (!dir.exists())
+            dir.mkdir();
+
+        if (!file.exists()) {
+            try (InputStream stream = plugin.getResource("menus/" + fileName + ".yml")) {
+
+                if (stream == null) {
                     file.createNewFile();
                     return;
                 }
 
-                Files.copy(inputStream, Paths.get(file.getAbsolutePath()));
+                Files.copy(stream, Paths.get(file.getAbsolutePath()));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

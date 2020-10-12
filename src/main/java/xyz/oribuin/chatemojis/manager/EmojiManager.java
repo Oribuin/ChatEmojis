@@ -1,11 +1,11 @@
-package xyz.oribuin.chatemojis.managers;
+package xyz.oribuin.chatemojis.manager;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
-import xyz.oribuin.chatemojis.utils.FileUtils;
+import xyz.oribuin.chatemojis.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

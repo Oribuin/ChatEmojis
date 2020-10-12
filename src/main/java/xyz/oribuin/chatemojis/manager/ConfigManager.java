@@ -1,8 +1,10 @@
-package xyz.oribuin.chatemojis.managers;
+package xyz.oribuin.chatemojis.manager;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import xyz.oribuin.chatemojis.ChatEmojis;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,25 +26,27 @@ public class ConfigManager extends Manager {
         // Define the configuration
         FileConfiguration config = this.plugin.getConfig();
 
-        for (Setting setting : Setting.values()) {
-            // Set the value if it does not exist
-            setting.setIfNotExists(config);
+        for (Setting value : Setting.values()) {
+            if (config.get(value.key) == null) {
+                config.set(value.key, value.defaultValue);
+            }
 
-            // Load value
-            setting.load(config);
+            value.load(config);
+        }
+
+        try {
+            config.save(new File(plugin.getDataFolder(), "config.yml"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
     public enum Setting {
 
         CMD_SETTINGS_ECO_ENABLED("command-settings.economy", true),
-        CMD_SETTINGS_ECO_CREATE("command-settings.create-price", 500),
+        CMD_SETTINGS_ECO_CREATE("command-settings.create-price", 500.0),
         CMD_SETTINGS_PERM_ENABLED("command-settings.add-perm", false),
-        DISABLED_WORLDS("disabled-worlds", Arrays.asList("disabled-world-1", "disabled-world-2")),
-        GUI_NAME("menu.title", "Emoji Count | emojis"),
-        GUI_BORDER("menu.border", "GRAY_STAINED_GLASS_PANE"),
-        GUI_USE_SOUND("menu.use-sound", true),
-        GUI_CLICK_SOUND("menu.click-sound", "ENTITY_ARROW_HIT_PLAYER");
+        DISABLED_WORLDS("disabled-worlds", Arrays.asList("disabled-world-1", "disabled-world-2"));
 
 
         private final String key;
@@ -54,15 +58,6 @@ public class ConfigManager extends Manager {
             this.defaultValue = defaultValue;
         }
 
-        public void setIfNotExists(FileConfiguration config) {
-            this.loadValue();
-            this.value = ChatEmojis.getInstance().getConfig().get(this.key);
-
-            if (this.value == null) {
-                config.set(this.key, this.defaultValue);
-            }
-
-        }
 
         /**
          * Gets the setting as a boolean

@@ -1,4 +1,4 @@
-package xyz.oribuin.chatemojis.utils;
+package xyz.oribuin.chatemojis.util;
 
 import org.bukkit.Bukkit;
 

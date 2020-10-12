@@ -1,4 +1,4 @@
-package xyz.oribuin.chatemojis.hooks;
+package xyz.oribuin.chatemojis.hook;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;

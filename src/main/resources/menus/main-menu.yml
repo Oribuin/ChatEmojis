@@ -1,7 +1,7 @@
 # Configure the Main Menu with all the emojis listed in it in this file
 
 # Supports PlaceholderAPI
-menu-name: 'ChatEmojis Plugin | %chatemojis_total%'
+menu-name: 'Emoji Menu | %chatemojis_total%'
 # Should there be click sounds?
 use-sound: true
 # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
@@ -17,20 +17,20 @@ emoji-item:
     - ' &e» &bKeyword: &e%emoji_check%'
     - ' &e» &bEmoji: &e%emoji_replacement%'
     - ' '
-    - ' &e» &bCreator: &e%emoji_creator%'
+    - ' &aGet emoji access on the server store!'
   # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemFlag.html
   item-flags:
     - 'HIDE_ATTRIBUTES'
 
   # Use %player% for the user who clicked the menu
-  player-commands:
-    - 'say Hello!'
-  console-commands:
-    - 'say Hello, %player%!'
+  player-commands: []
+  
+  console-commands: []
+
 
 my-emojis:
   # Should the 'My Emojis' Menu be enabled
-  enabled: true
+  enabled: false
   name: '&e« &bMy Emojis »'
   material: 'DIAMOND'
   slot: 49

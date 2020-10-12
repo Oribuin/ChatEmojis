@@ -3,15 +3,14 @@ package xyz.oribuin.chatemojis;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.oribuin.chatemojis.cmds.CmdEmoji;
-import xyz.oribuin.chatemojis.cmds.OriCommand;
-import xyz.oribuin.chatemojis.hooks.PlaceholderExp;
-import xyz.oribuin.chatemojis.hooks.VaultHook;
-import xyz.oribuin.chatemojis.listeners.PlayerChat;
-import xyz.oribuin.chatemojis.managers.ConfigManager;
-import xyz.oribuin.chatemojis.managers.EmojiManager;
-import xyz.oribuin.chatemojis.managers.GuiManager;
-import xyz.oribuin.chatemojis.managers.MessageManager;
+import xyz.oribuin.chatemojis.command.CmdEmoji;
+import xyz.oribuin.chatemojis.hook.PlaceholderAPIHook;
+import xyz.oribuin.chatemojis.hook.VaultHook;
+import xyz.oribuin.chatemojis.listener.PlayerChat;
+import xyz.oribuin.chatemojis.manager.ConfigManager;
+import xyz.oribuin.chatemojis.manager.EmojiManager;
+import xyz.oribuin.chatemojis.manager.GuiManager;
+import xyz.oribuin.chatemojis.manager.MessageManager;
 
 public class ChatEmojis extends JavaPlugin {
 
@@ -30,11 +29,6 @@ public class ChatEmojis extends JavaPlugin {
 
         instance = this;
 
-        // Register commands
-        this.registerCommands(new CmdEmoji(this));
-        // Register Listeners
-        this.registerListeners(new PlayerChat(this));
-
         // Register Managers
         this.configManager = new ConfigManager(this);
         this.emojiManager = new EmojiManager(this);
@@ -45,9 +39,16 @@ public class ChatEmojis extends JavaPlugin {
         vaultHook.setupEconomy();
         vaultHook.setupPermissions();
 
+
+        // Register command
+        new CmdEmoji(this).register();
+
+        // Register Listeners
+        this.registerListeners(new PlayerChat(this));
+
         // Register PlaceholderAPI
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new PlaceholderExp(this).register();
+        if (PlaceholderAPIHook.enabled()) {
+            //new PlaceholderExp(this).register();
         }
 
         this.guiManager.registerMenus();
@@ -60,12 +61,6 @@ public class ChatEmojis extends JavaPlugin {
         this.emojiManager.reload();
         this.guiManager.reload();
         this.messageManager.reload();
-    }
-
-    private void registerCommands(OriCommand... commands) {
-        for (OriCommand cmd : commands) {
-            cmd.registerCommand();
-        }
     }
 
     private void registerListeners(Listener... listeners) {

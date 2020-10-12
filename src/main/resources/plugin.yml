@@ -14,7 +14,7 @@ commands:
     usage: /<usage>
     aliases:
       - chatemojis
-      - emoji
+      - emojis
 
 permissions:
   chatemojis.*:

@@ -1,11 +1,11 @@
-package xyz.oribuin.chatemojis.hooks;
+package xyz.oribuin.chatemojis.hook;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import xyz.oribuin.chatemojis.ChatEmojis;
-import xyz.oribuin.chatemojis.managers.Manager;
+import xyz.oribuin.chatemojis.manager.Manager;
 
 public class VaultHook extends Manager {
     private static Economy vaultEco = null;

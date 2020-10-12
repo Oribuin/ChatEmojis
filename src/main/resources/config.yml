@@ -1,14 +1,1 @@
-# ChatEmojis plugin created by Oribuin | https://www.spigotmc.org/resources/chatemojis-1-15.77123/
-#
-# Note: command-settings.allow-perm adds the permission onto a player when they create an emoji
-command-settings:
-  # Should a player be able to pay to create emojis (Requires Vault)
-  economy: true
-  # Price the player has to pay to create emojis
-  create-price: 500.0
-  # Should the permission be added to the emoji creator
-  add-perm: false
-
-disabled-worlds:
-  - 'disabled-world-1'
-  - 'disabled-world-2'
+# ChatEmojis by Oribuin | https://github.com/Oribuin/ChatEmojis/

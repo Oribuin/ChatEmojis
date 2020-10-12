@@ -1,12 +1,10 @@
-package xyz.oribuin.chatemojis.hooks;
+package xyz.oribuin.chatemojis.hook;
+
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
-
-import java.util.Objects;
-import java.util.UUID;
 
 public class PlaceholderExp extends PlaceholderExpansion {
     private final ChatEmojis plugin;

@@ -1,4 +1,4 @@
-package xyz.oribuin.chatemojis.guis;
+package xyz.oribuin.chatemojis.menu;
 
 import dev.rosewood.guiframework.GuiFactory;
 import dev.rosewood.guiframework.GuiFramework;
@@ -18,10 +18,10 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.oribuin.chatemojis.ChatEmojis;
-import xyz.oribuin.chatemojis.hooks.PlaceholderAPIHook;
-import xyz.oribuin.chatemojis.managers.EmojiManager;
-import xyz.oribuin.chatemojis.utils.HexUtils;
-import xyz.oribuin.chatemojis.utils.StringPlaceholders;
+import xyz.oribuin.chatemojis.hook.PlaceholderAPIHook;
+import xyz.oribuin.chatemojis.manager.EmojiManager;
+import xyz.oribuin.chatemojis.util.HexUtils;
+import xyz.oribuin.chatemojis.util.StringPlaceholders;
 
 import java.util.*;
 

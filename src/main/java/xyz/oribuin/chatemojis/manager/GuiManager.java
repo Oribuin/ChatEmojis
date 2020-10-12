@@ -1,9 +1,9 @@
-package xyz.oribuin.chatemojis.managers;
+package xyz.oribuin.chatemojis.manager;
 
 import xyz.oribuin.chatemojis.ChatEmojis;
-import xyz.oribuin.chatemojis.guis.MainMenu;
-import xyz.oribuin.chatemojis.guis.Menu;
-import xyz.oribuin.chatemojis.guis.MyEmojis;
+import xyz.oribuin.chatemojis.menu.MainMenu;
+import xyz.oribuin.chatemojis.menu.Menu;
+import xyz.oribuin.chatemojis.menu.MyEmojis;
 
 import java.util.LinkedList;
 
