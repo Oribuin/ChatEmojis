@@ -1,7 +1,7 @@
 # Configure the Main Menu with all the emojis listed in it in this file
 
 # Supports PlaceholderAPI
-menu-name: 'Emoji Menu | %chatemojis_total%'
+menu-name: 'Emoji Menu | Total %chatemojis_total%'
 # Should there be click sounds?
 use-sound: true
 # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
@@ -14,10 +14,10 @@ emoji-item:
   material: 'NAME_TAG'
   glowing: true
   lore:
+    - ' '
     - ' &e» &bKeyword: &e%emoji_check%'
     - ' &e» &bEmoji: &e%emoji_replacement%'
-    - ' '
-    - ' &aGet emoji access on the server store!'
+    - ' &e» &bCreator: &e%emoji_creator%'
   # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemFlag.html
   item-flags:
     - 'HIDE_ATTRIBUTES'
@@ -30,7 +30,7 @@ emoji-item:
 
 my-emojis:
   # Should the 'My Emojis' Menu be enabled
-  enabled: false
+  enabled: true
   name: '&e« &bMy Emojis »'
   material: 'DIAMOND'
   slot: 49

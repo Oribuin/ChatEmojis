@@ -3,10 +3,12 @@ package xyz.oribuin.chatemojis.command.subcommand;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
+import xyz.oribuin.chatemojis.api.EmojiCreateEvent;
 import xyz.oribuin.chatemojis.command.CmdEmoji;
 import xyz.oribuin.chatemojis.command.SubCommand;
 import xyz.oribuin.chatemojis.hook.VaultHook;
@@ -91,10 +93,14 @@ public class CmdCreate extends SubCommand {
         msgM.sendMessage(sender, "created-emoji", placeholders);
 
         // Create emoji in manager
-        if (sender instanceof Player)
+        if (sender instanceof Player) {
             emojiM.createEmoji((Player) sender, emojiName, emojiCheck, emojiReplacement);
-        else
+            Bukkit.getPluginManager().callEvent(new EmojiCreateEvent(emojiName, emojiCheck, emojiReplacement, (Player) sender));
+
+        } else {
             emojiM.createEmoji(null, emojiName, emojiCheck, emojiReplacement);
+            Bukkit.getPluginManager().callEvent(new EmojiCreateEvent(emojiName, emojiCheck, emojiReplacement, null));
+        }
 
     }
 }

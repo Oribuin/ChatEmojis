@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.oribuin.chatemojis.command.CmdEmoji;
 import xyz.oribuin.chatemojis.hook.PlaceholderAPIHook;
+import xyz.oribuin.chatemojis.hook.PlaceholderExp;
 import xyz.oribuin.chatemojis.hook.VaultHook;
 import xyz.oribuin.chatemojis.listener.PlayerChat;
 import xyz.oribuin.chatemojis.manager.ConfigManager;
@@ -48,7 +49,7 @@ public class ChatEmojis extends JavaPlugin {
 
         // Register PlaceholderAPI
         if (PlaceholderAPIHook.enabled()) {
-            //new PlaceholderExp(this).register();
+            new PlaceholderExp(this).register();
         }
 
         this.guiManager.registerMenus();

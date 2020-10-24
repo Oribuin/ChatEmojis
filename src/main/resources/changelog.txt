@@ -1,30 +1,8 @@
 Changelog:
-  » Actual visual changes
-    • Added 1.16 Hex Color Support
-    • Added ability to pay to create an emoji (Requires Vault)
-    • Added ability to make plugin add Permission to an Emoji Creator (Requires Vault)
-    • Added ability to remove an emoji
-    • Added tab complete
-    • Added auto updating config.yml
-    • Fixed placeholders
-    • Changed permissions from custom to chatemojis.emoji.name 
-    • Changed 'emojis.emoji.name' to 'emojis.emoji.gui-name' in emojis.yml
-    • Added ability to change default formatting of emoji creation
-    • Added ability to have disable messages from messages.yml
-    • Put GUIs in a their own Files
-    • Added "My Emojis" Menu
-    • Added ability to define emoji creators
-    • Added "No Emojis Created" to GUIs
-    • Added new placeholders (Requires PlaceholderAPI):
-       » Placeholders
-        • %chatemojis_unlocked% - Number of emojis you have permission for.
-        • %chatemojis_created% - Number of emojis you have created
-    • Removed Chat colors from emojis as they'd conflict with other plugins and they could be used to have chatcolored chat
-    • Redesigned spigot page
+    Fixed a ton of issues regarding the guis
+    Config.yml and Messages.yml will now automatically update with values that dont exist
+    Added API & Event EmojiCreateEvent
 
-  » Code upgrades
-    • Cleaned up a lot of 5 month old code
-    • Added managers
-    • Created API Friendly methods
-    • Added Vault support
-    • Added abstract command class
+Code Upgrades & Changes:
+    Cleaned up code with comments & such
+    Moved commands to individual classes

@@ -32,9 +32,12 @@ public class MainMenu extends Menu {
     private final GuiFramework guiFramework;
     private final Player player;
     private final GuiContainer guiContainer;
+    private static MainMenu instance;
 
     public MainMenu(ChatEmojis plugin, Player player) {
         super(plugin, "main-menu");
+        instance = this;
+
         this.plugin = plugin;
         this.guiFramework = GuiFramework.instantiate(this.plugin);
         this.player = player;
@@ -84,7 +87,6 @@ public class MainMenu extends Menu {
 
     private void buildGui() {
         FileUtils.createMenuFile(plugin, "main-menu");
-        System.out.println(menu() == null);
         guiContainer.addScreen(menu());
         guiFramework.getGuiManager().registerGui(guiContainer);
     }
@@ -100,7 +102,7 @@ public class MainMenu extends Menu {
         // Define configuration files
         ConfigurationSection config = emojiManager.getEmojiSec();
         if (config == null)
-            return null;
+            return guiScreen;
 
         this.borderSlots().forEach(integer -> guiScreen.addItemStackAt(integer, this.getItem("border-item")));
 
@@ -156,29 +158,29 @@ public class MainMenu extends Menu {
         // Create the my emojis item
         if (this.getMenuConfig().getString("my-emojis") != null) {
 
-            if (!this.getMenuConfig().getBoolean("my-emojis.enabled")) {
+            if (this.getMenuConfig().getBoolean("my-emojis.enabled")) {
+
+                List<String> lore = new ArrayList<>();
+                for (String string : this.getMenuConfig().getStringList("my-emojis.lore"))
+                    lore.add(this.format(string, StringPlaceholders.empty()));
+
+                guiScreen.addButtonAt(getMenuConfig().getInt("my-emojis.slot"), GuiFactory.createButton()
+                        .setName(this.format(getMenuConfig().getString("my-emojis.name"), StringPlaceholders.empty()))
+                        .setLore(lore)
+                        .setIcon(Material.valueOf(getMenuConfig().getString("my-emojis.material")))
+                        .setGlowing(getMenuConfig().getBoolean("my-emojis.glowing"))
+                        .setClickAction(event -> {
+                            if (getMenuConfig().getBoolean("use-sound")) {
+                                player.playSound(player.getLocation(), Sound.valueOf(getMenuConfig().getString("click-sound")), 100, 1);
+                            }
+
+                            new MyEmojis(plugin, player).openGui();
+                            return ClickAction.NOTHING;
+                        })
+                );
+            } else {
                 guiScreen.addItemStackAt(this.getMenuConfig().getInt("my-emojis.slot"), getItem("border-item"));
-                return null;
             }
-
-            List<String> lore = new ArrayList<>();
-            for (String string : this.getMenuConfig().getStringList("my-emojis.lore"))
-                lore.add(this.format(string, StringPlaceholders.empty()));
-
-            guiScreen.addButtonAt(getMenuConfig().getInt("my-emojis.slot"), GuiFactory.createButton()
-                    .setName(this.format(getMenuConfig().getString("my-emojis.name"), StringPlaceholders.empty()))
-                    .setLore(lore)
-                    .setIcon(Material.valueOf(getMenuConfig().getString("my-emojis.material")))
-                    .setGlowing(getMenuConfig().getBoolean("my-emojis.glowing"))
-                    .setClickAction(event -> {
-                        if (getMenuConfig().getBoolean("use-sound")) {
-                            player.playSound(player.getLocation(), Sound.valueOf(getMenuConfig().getString("click-sound")), 100, 1);
-                        }
-
-                        new MyEmojis(plugin, player).openGui();
-                        return ClickAction.NOTHING;
-                    })
-            );
         }
 
         // Create emojis
@@ -274,13 +276,17 @@ public class MainMenu extends Menu {
         return emojiSlots;
     }
 
-    private void executeCommands(Player player,  StringPlaceholders.Builder placeholders) {
+    private void executeCommands(Player player, StringPlaceholders.Builder placeholders) {
         getMenuConfig().getStringList("emoji-item.player-commands").forEach(s -> player.performCommand(format(s, placeholders.addPlaceholder("player", player.getName()).build())));
         getMenuConfig().getStringList("emoji-item.console-commands").forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), format(s, placeholders.addPlaceholder("player", player.getName()).build())));
     }
 
     private String format(String text, StringPlaceholders placeholders) {
         return HexUtils.colorify(PlaceholderAPIHook.apply(player, placeholders.apply(text)));
+    }
+
+    public static MainMenu getInstance() {
+        return instance;
     }
 }
 

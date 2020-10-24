@@ -31,10 +31,15 @@ public class MyEmojis extends Menu {
     private final GuiFramework guiFramework;
     private final Player player;
     private GuiContainer guiContainer;
+    private static MyEmojis instance;
 
     public MyEmojis(ChatEmojis plugin, Player player) {
         super(plugin, "my-emojis");
         this.plugin = plugin;
+
+        instance = this;
+
+
         this.guiFramework = GuiFramework.instantiate(this.plugin);
         this.player = player;
         this.guiContainer = null;
@@ -272,6 +277,10 @@ public class MyEmojis extends Menu {
         for (int i = 37; i <= 43; i++) emojiSlots.add(i);
 
         return emojiSlots;
+    }
+
+    public static MyEmojis getInstance() {
+        return instance;
     }
 }
 

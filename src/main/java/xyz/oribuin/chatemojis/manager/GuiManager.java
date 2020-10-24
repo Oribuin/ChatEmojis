@@ -21,6 +21,8 @@ public class GuiManager extends Manager {
 
     @Override
     public void reload() {
-        menus.forEach(Menu::reload);
+        this.menus.clear();
+        this.registerMenus();
+        this.menus.forEach(Menu::reload);
     }
 }
