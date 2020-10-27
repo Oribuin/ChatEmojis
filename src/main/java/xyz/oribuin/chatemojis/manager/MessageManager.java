@@ -104,7 +104,6 @@ public class MessageManager extends Manager {
         PLAYER_ONLY("player-only", "&cOnly a player can execute this command.");
 
 
-
         private final String key;
         private final Object defaultValue;
         private Object value = null;

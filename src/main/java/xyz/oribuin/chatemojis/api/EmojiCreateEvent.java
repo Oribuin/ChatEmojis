@@ -7,16 +7,22 @@ import org.bukkit.event.HandlerList;
 
 public class EmojiCreateEvent extends Event implements Cancellable {
 
+    private static final HandlerList handlerList = new HandlerList();
     private final String emojiName;
     private final String emojiCheck;
     private final String emojiReplacement;
     private final Player creator;
+    private boolean isCancelled = false;
 
     public EmojiCreateEvent(String emojiName, String emojiCheck, String emojiReplacement, Player creator) {
         this.emojiName = emojiName;
         this.emojiCheck = emojiCheck;
         this.emojiReplacement = emojiReplacement;
         this.creator = creator;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlerList;
     }
 
     public Player getCreator() {
@@ -35,10 +41,6 @@ public class EmojiCreateEvent extends Event implements Cancellable {
         return emojiName;
     }
 
-    private static final HandlerList handlerList = new HandlerList();
-
-    private boolean isCancelled = false;
-
     @Override
     public boolean isCancelled() {
         return isCancelled;
@@ -51,10 +53,6 @@ public class EmojiCreateEvent extends Event implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return handlerList;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlerList;
     }
 

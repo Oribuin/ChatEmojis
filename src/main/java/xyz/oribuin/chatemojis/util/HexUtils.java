@@ -1,15 +1,16 @@
 package xyz.oribuin.chatemojis.util;
 
 
-import java.awt.Color;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.command.CommandSender;
 
 /**
  * @author Esophose

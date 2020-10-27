@@ -13,12 +13,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class CmdEmoji extends OriCommand {
-    private List<SubCommand> subcommands = new ArrayList<>();
+    private final List<SubCommand> subcommands = new ArrayList<>();
 
     public CmdEmoji(ChatEmojis plugin) {
         super(plugin, "chatemoji");
     }
-
 
     public void executeCommand(CommandSender sender, String[] args) {
 

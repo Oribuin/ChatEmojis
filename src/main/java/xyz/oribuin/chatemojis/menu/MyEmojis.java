@@ -27,11 +27,11 @@ import java.util.*;
 
 public class MyEmojis extends Menu {
 
+    private static MyEmojis instance;
     private final ChatEmojis plugin;
     private final GuiFramework guiFramework;
     private final Player player;
     private GuiContainer guiContainer;
-    private static MyEmojis instance;
 
     public MyEmojis(ChatEmojis plugin, Player player) {
         super(plugin, "my-emojis");
@@ -44,6 +44,10 @@ public class MyEmojis extends Menu {
         this.player = player;
         this.guiContainer = null;
 
+    }
+
+    public static MyEmojis getInstance() {
+        return instance;
     }
 
     public void openGui() {
@@ -277,10 +281,6 @@ public class MyEmojis extends Menu {
         for (int i = 37; i <= 43; i++) emojiSlots.add(i);
 
         return emojiSlots;
-    }
-
-    public static MyEmojis getInstance() {
-        return instance;
     }
 }
 

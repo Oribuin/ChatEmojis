@@ -35,6 +35,6 @@ public abstract class Menu {
     }
 
     private File getMenuFile() {
-        return new File(this.plugin.getDataFolder() + File.separator + "menus", this.getGuiName()+ ".yml");
+        return new File(this.plugin.getDataFolder() + File.separator + "menus", this.getGuiName() + ".yml");
     }
 }

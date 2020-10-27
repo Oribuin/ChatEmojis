@@ -1,6 +1,5 @@
 package xyz.oribuin.chatemojis.command.subcommand;
 
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -9,7 +8,6 @@ import xyz.oribuin.chatemojis.command.CmdEmoji;
 import xyz.oribuin.chatemojis.command.SubCommand;
 import xyz.oribuin.chatemojis.manager.MessageManager;
 import xyz.oribuin.chatemojis.menu.MainMenu;
-import xyz.oribuin.chatemojis.util.HexUtils;
 import xyz.oribuin.chatemojis.util.StringPlaceholders;
 
 public class CmdMenu extends SubCommand {

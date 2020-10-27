@@ -39,7 +39,7 @@ public abstract class OriCommand implements TabExecutor, Listener {
      * Required void function for command execution
      *
      * @param sender The command sender
-     * @param args The arguments provided in the command
+     * @param args   The arguments provided in the command
      */
     public abstract void executeCommand(CommandSender sender, String[] args);
 
@@ -47,7 +47,7 @@ public abstract class OriCommand implements TabExecutor, Listener {
      * Setup the tab completion for the command
      *
      * @param sender The person executing the command
-     * @param args The arguments being provided
+     * @param args   The arguments being provided
      * @return Tab complete String List
      */
     public abstract List<String> tabComplete(CommandSender sender, String[] args);
@@ -58,7 +58,7 @@ public abstract class OriCommand implements TabExecutor, Listener {
     public abstract void addSubCommands();
 
     // Register Command
-     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         this.executeCommand(sender, args);
         return true;
     }
@@ -76,6 +76,6 @@ public abstract class OriCommand implements TabExecutor, Listener {
 
     // Get command
     public Command getCommand() {
-         return plugin.getCommand(this.getName());
+        return plugin.getCommand(this.getName());
     }
 }

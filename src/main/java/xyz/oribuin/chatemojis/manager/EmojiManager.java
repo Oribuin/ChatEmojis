@@ -57,7 +57,7 @@ public class EmojiManager extends Manager {
     public int getEmojiCreated(Player player) {
         return (int) getEmojiSec().getKeys(false).stream().filter(emoji -> player.getUniqueId().equals(UUID.fromString(Objects.requireNonNull(getEmojiSec().getString(emoji + ".creator"))))).count();
     }
-    
+
     public int getEmojiTotal() {
         return getEmojiSec().getKeys(false).size();
     }

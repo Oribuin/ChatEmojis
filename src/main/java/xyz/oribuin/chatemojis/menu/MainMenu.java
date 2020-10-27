@@ -28,11 +28,11 @@ import java.util.*;
 
 public class MainMenu extends Menu {
 
+    private static MainMenu instance;
     private final ChatEmojis plugin;
     private final GuiFramework guiFramework;
     private final Player player;
     private final GuiContainer guiContainer;
-    private static MainMenu instance;
 
     public MainMenu(ChatEmojis plugin, Player player) {
         super(plugin, "main-menu");
@@ -43,6 +43,10 @@ public class MainMenu extends Menu {
         this.player = player;
         this.guiContainer = GuiFactory.createContainer();
 
+    }
+
+    public static MainMenu getInstance() {
+        return instance;
     }
 
     public void openGui() {
@@ -283,10 +287,6 @@ public class MainMenu extends Menu {
 
     private String format(String text, StringPlaceholders placeholders) {
         return HexUtils.colorify(PlaceholderAPIHook.apply(player, placeholders.apply(text)));
-    }
-
-    public static MainMenu getInstance() {
-        return instance;
     }
 }
 

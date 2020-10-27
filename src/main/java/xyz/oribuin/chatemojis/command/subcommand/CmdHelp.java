@@ -8,7 +8,6 @@ import xyz.oribuin.chatemojis.command.CmdEmoji;
 import xyz.oribuin.chatemojis.command.SubCommand;
 import xyz.oribuin.chatemojis.manager.MessageManager;
 import xyz.oribuin.chatemojis.util.HexUtils;
-import xyz.oribuin.chatemojis.util.StringPlaceholders;
 
 public class CmdHelp extends SubCommand {
     private final ChatEmojis plugin;
