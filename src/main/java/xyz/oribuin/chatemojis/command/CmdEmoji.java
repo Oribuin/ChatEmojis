@@ -6,6 +6,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.command.subcommand.*;
+import xyz.oribuin.chatemojis.manager.EmojiManager;
+import xyz.oribuin.chatemojis.manager.MessageManager;
+import xyz.oribuin.orilibrary.OriCommand;
+import xyz.oribuin.orilibrary.SubCommand;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +27,7 @@ public class CmdEmoji extends OriCommand {
 
         for (SubCommand cmd : subcommands) {
             if (args.length == 0) {
-                plugin.getMessageManager().sendMessage(sender, "unknown-command");
+                plugin.getManager(MessageManager.class).sendMessage(sender, "unknown-command");
                 break;
             }
 
@@ -70,7 +74,7 @@ public class CmdEmoji extends OriCommand {
             } else if (args[0].equalsIgnoreCase("remove") && sender.hasPermission("chatemojis.remove")) {
                 List<String> emojiNames = new ArrayList<>();
 
-                this.plugin.getEmojiManager().getEmojiSec().getKeys(false).forEach(emoji -> emojiNames.add(StringUtils.capitalize(emoji)));
+                this.plugin.getManager(EmojiManager.class).getEmojiSec().getKeys(false).forEach(emoji -> emojiNames.add(StringUtils.capitalize(emoji)));
 
                 StringUtil.copyPartialMatches(args[1].toLowerCase(), emojiNames, suggestions);
             }
@@ -94,11 +98,14 @@ public class CmdEmoji extends OriCommand {
 
     @Override
     public void addSubCommands() {
-        subcommands.addAll(Arrays.asList(new CmdCreate(plugin, this),
-                new CmdHelp(plugin, this),
-                new CmdMenu(plugin, this),
-                new CmdReload(plugin, this),
-                new CmdRemove(plugin, this)
+
+        ChatEmojis chatEmojis = (ChatEmojis) plugin;
+
+        subcommands.addAll(Arrays.asList(new CmdCreate(chatEmojis, this),
+                new CmdHelp(chatEmojis, this),
+                new CmdMenu(chatEmojis, this),
+                new CmdReload(chatEmojis, this),
+                new CmdRemove(chatEmojis, this)
         ));
     }
 }

@@ -5,7 +5,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import xyz.oribuin.chatemojis.ChatEmojis;
-import xyz.oribuin.chatemojis.manager.Manager;
+import xyz.oribuin.orilibrary.Manager;
 
 public class VaultHook extends Manager {
     private static Economy vaultEco = null;
@@ -24,7 +24,12 @@ public class VaultHook extends Manager {
     }
 
     @Override
-    public void reload() {
+    public void enable() {
+        // Unused
+    }
+
+    @Override
+    public void disable() {
         // Unused
     }
 

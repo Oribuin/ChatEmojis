@@ -20,9 +20,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.hook.PlaceholderAPIHook;
 import xyz.oribuin.chatemojis.manager.EmojiManager;
-import xyz.oribuin.chatemojis.util.FileUtils;
 import xyz.oribuin.chatemojis.util.HexUtils;
-import xyz.oribuin.chatemojis.util.StringPlaceholders;
+import xyz.oribuin.orilibrary.FileUtils;
+import xyz.oribuin.orilibrary.StringPlaceholders;
 
 import java.util.*;
 
@@ -97,7 +97,7 @@ public class MainMenu extends Menu {
 
     private GuiScreen menu() {
 
-        EmojiManager emojiManager = this.plugin.getEmojiManager();
+        EmojiManager emojiManager = this.plugin.getManager(EmojiManager.class);
 
         GuiScreen guiScreen = GuiFactory.createScreen(this.guiContainer, GuiSize.ROWS_SIX)
                 .setTitle(HexUtils.colorify(this.getValue("menu-name")));

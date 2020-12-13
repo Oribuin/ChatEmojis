@@ -5,10 +5,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.command.CmdEmoji;
-import xyz.oribuin.chatemojis.command.SubCommand;
 import xyz.oribuin.chatemojis.manager.EmojiManager;
 import xyz.oribuin.chatemojis.manager.MessageManager;
-import xyz.oribuin.chatemojis.util.StringPlaceholders;
+import xyz.oribuin.orilibrary.StringPlaceholders;
+import xyz.oribuin.orilibrary.SubCommand;
 
 public class CmdRemove extends SubCommand {
     private final ChatEmojis plugin;
@@ -21,8 +21,8 @@ public class CmdRemove extends SubCommand {
     @Override
     public void executeArgument(CommandSender sender, String[] args) {
         // Define manager variables
-        MessageManager msgM = this.plugin.getMessageManager();
-        EmojiManager emojiM = this.plugin.getEmojiManager();
+        MessageManager msgM = this.plugin.getManager(MessageManager.class);
+        EmojiManager emojiM = this.plugin.getManager(EmojiManager.class);
         ConfigurationSection section = emojiM.getEmojiSec();
 
         // Check if sender has permission

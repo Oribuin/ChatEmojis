@@ -5,6 +5,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
+import xyz.oribuin.chatemojis.manager.EmojiManager;
 
 public class PlaceholderExp extends PlaceholderExpansion {
     private final ChatEmojis plugin;
@@ -15,7 +16,7 @@ public class PlaceholderExp extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String placeholder) {
-        ConfigurationSection emojiSec = this.plugin.getEmojiManager().getEmojiSec();
+        ConfigurationSection emojiSec = this.plugin.getManager(EmojiManager.class).getEmojiSec();
         if (emojiSec == null) return null;
 
         if (placeholder == null)
@@ -25,10 +26,10 @@ public class PlaceholderExp extends PlaceholderExpansion {
             return String.valueOf(emojiSec.getKeys(false).stream().filter(emoji -> player.hasPermission("chatemojis.emoji." + emoji)).count());
 
         if (placeholder.equalsIgnoreCase("total"))
-            return String.valueOf(plugin.getEmojiManager().getEmojiTotal());
+            return String.valueOf(plugin.getManager(EmojiManager.class).getEmojiTotal());
 
         if (placeholder.equals("created"))
-            return String.valueOf(plugin.getEmojiManager().getEmojiCreated(player));
+            return String.valueOf(plugin.getManager(EmojiManager.class).getEmojiCreated(player));
 
         return null;
     }

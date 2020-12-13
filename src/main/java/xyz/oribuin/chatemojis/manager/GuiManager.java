@@ -4,6 +4,7 @@ import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.menu.MainMenu;
 import xyz.oribuin.chatemojis.menu.Menu;
 import xyz.oribuin.chatemojis.menu.MyEmojis;
+import xyz.oribuin.orilibrary.Manager;
 
 import java.util.LinkedList;
 
@@ -15,14 +16,18 @@ public class GuiManager extends Manager {
     }
 
     public void registerMenus() {
-        this.menus.add(new MainMenu(plugin, null));
-        this.menus.add(new MyEmojis(plugin, null));
+        this.menus.add(new MainMenu((ChatEmojis) getPlugin(), null));
+        this.menus.add(new MyEmojis((ChatEmojis) getPlugin(), null));
     }
 
     @Override
-    public void reload() {
-        this.menus.clear();
+    public void enable() {
         this.registerMenus();
-        this.menus.forEach(Menu::reload);
+        this.menus.forEach(Menu::enable);
+    }
+
+    @Override
+    public void disable() {
+        this.menus.clear();
     }
 }

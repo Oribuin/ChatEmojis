@@ -10,12 +10,12 @@ import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.api.EmojiCreateEvent;
 import xyz.oribuin.chatemojis.command.CmdEmoji;
-import xyz.oribuin.chatemojis.command.SubCommand;
 import xyz.oribuin.chatemojis.hook.VaultHook;
 import xyz.oribuin.chatemojis.manager.ConfigManager;
 import xyz.oribuin.chatemojis.manager.EmojiManager;
 import xyz.oribuin.chatemojis.manager.MessageManager;
-import xyz.oribuin.chatemojis.util.StringPlaceholders;
+import xyz.oribuin.orilibrary.StringPlaceholders;
+import xyz.oribuin.orilibrary.SubCommand;
 
 public class CmdCreate extends SubCommand {
     private final ChatEmojis plugin;
@@ -28,8 +28,8 @@ public class CmdCreate extends SubCommand {
 
     @Override
     public void executeArgument(CommandSender sender, String[] args) {
-        MessageManager msgM = this.plugin.getMessageManager();
-        EmojiManager emojiM = this.plugin.getEmojiManager();
+        MessageManager msgM = this.plugin.getManager(MessageManager.class);
+        EmojiManager emojiM = this.plugin.getManager(EmojiManager.class);
         ConfigurationSection section = emojiM.getEmojiSec();
 
         // Check if the user has enough permissions

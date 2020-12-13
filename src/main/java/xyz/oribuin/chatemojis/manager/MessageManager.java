@@ -7,9 +7,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.hook.PlaceholderAPIHook;
-import xyz.oribuin.chatemojis.util.FileUtils;
 import xyz.oribuin.chatemojis.util.HexUtils;
-import xyz.oribuin.chatemojis.util.StringPlaceholders;
+import xyz.oribuin.orilibrary.FileUtils;
+import xyz.oribuin.orilibrary.Manager;
+import xyz.oribuin.orilibrary.StringPlaceholders;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,9 +25,9 @@ public class MessageManager extends Manager {
     }
 
     @Override
-    public void reload() {
-        FileUtils.createFile(this.plugin, "messages.yml");
-        messageConfig = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "messages.yml"));
+    public void enable() {
+        FileUtils.createFile(this.getPlugin(), "messages.yml");
+        messageConfig = YamlConfiguration.loadConfiguration(new File(this.getPlugin().getDataFolder(), "messages.yml"));
 
         for (Setting value : Setting.values()) {
             if (messageConfig.get(value.key) == null) {
@@ -37,10 +38,15 @@ public class MessageManager extends Manager {
         }
 
         try {
-            messageConfig.save(new File(plugin.getDataFolder(), "messages.yml"));
+            messageConfig.save(new File(getPlugin().getDataFolder(), "messages.yml"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+    }
+
+    @Override
+    public void disable() {
 
     }
 

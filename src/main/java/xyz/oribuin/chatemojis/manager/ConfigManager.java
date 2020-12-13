@@ -2,6 +2,7 @@ package xyz.oribuin.chatemojis.manager;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import xyz.oribuin.chatemojis.ChatEmojis;
+import xyz.oribuin.orilibrary.Manager;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,19 +13,18 @@ public class ConfigManager extends Manager {
 
     public ConfigManager(ChatEmojis plugin) {
         super(plugin);
-        this.reload();
     }
 
     @Override
-    public void reload() {
+    public void enable() {
         // Reload config
-        this.plugin.reloadConfig();
+        this.getPlugin().reloadConfig();
 
         // Save default configuration
-        this.plugin.saveDefaultConfig();
+        this.getPlugin().saveDefaultConfig();
 
         // Define the configuration
-        FileConfiguration config = this.plugin.getConfig();
+        FileConfiguration config = this.getPlugin().getConfig();
 
         for (Setting value : Setting.values()) {
             if (config.get(value.key) == null) {
@@ -35,10 +35,15 @@ public class ConfigManager extends Manager {
         }
 
         try {
-            config.save(new File(plugin.getDataFolder(), "config.yml"));
+            config.save(new File(getPlugin().getDataFolder(), "config.yml"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public void disable() {
+        // Unused
     }
 
     public enum Setting {

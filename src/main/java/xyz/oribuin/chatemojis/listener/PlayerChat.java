@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import xyz.oribuin.chatemojis.ChatEmojis;
+import xyz.oribuin.chatemojis.manager.EmojiManager;
 
 public class PlayerChat implements Listener {
 
@@ -19,7 +20,7 @@ public class PlayerChat implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
-        ConfigurationSection emojiSec = this.plugin.getEmojiManager().getEmojiSec();
+        ConfigurationSection emojiSec = this.plugin.getManager(EmojiManager.class).getEmojiSec();
         Player player = event.getPlayer();
 
         if (plugin.getConfig().getStringList("disabled-worlds").contains(player.getWorld().getName())) return;

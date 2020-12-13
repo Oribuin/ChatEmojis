@@ -21,7 +21,7 @@ import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.hook.PlaceholderAPIHook;
 import xyz.oribuin.chatemojis.manager.EmojiManager;
 import xyz.oribuin.chatemojis.util.HexUtils;
-import xyz.oribuin.chatemojis.util.StringPlaceholders;
+import xyz.oribuin.orilibrary.StringPlaceholders;
 
 import java.util.*;
 
@@ -60,7 +60,7 @@ public class MyEmojis extends Menu {
 
         this.guiContainer = GuiFactory.createContainer();
 
-        EmojiManager emojiManager = this.plugin.getEmojiManager();
+        EmojiManager emojiManager = this.plugin.getManager(EmojiManager.class);
 
         GuiScreen guiScreen = GuiFactory.createScreen(this.guiContainer, GuiSize.ROWS_SIX)
                 .setTitle(HexUtils.colorify(this.getValue("menu-name")));

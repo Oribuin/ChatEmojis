@@ -5,10 +5,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.command.CmdEmoji;
-import xyz.oribuin.chatemojis.command.SubCommand;
 import xyz.oribuin.chatemojis.manager.MessageManager;
 import xyz.oribuin.chatemojis.menu.MainMenu;
-import xyz.oribuin.chatemojis.util.StringPlaceholders;
+import xyz.oribuin.orilibrary.StringPlaceholders;
+import xyz.oribuin.orilibrary.SubCommand;
 
 public class CmdMenu extends SubCommand {
     private final ChatEmojis plugin;
@@ -21,7 +21,7 @@ public class CmdMenu extends SubCommand {
 
     @Override
     public void executeArgument(CommandSender sender, String[] args) {
-        MessageManager msgM = this.plugin.getMessageManager();
+        MessageManager msgM = this.plugin.getManager(MessageManager.class);
         if (args.length == 2) {
             Player mentioned = Bukkit.getPlayer(args[1]);
 

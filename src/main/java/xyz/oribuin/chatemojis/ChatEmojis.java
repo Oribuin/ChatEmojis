@@ -1,9 +1,7 @@
 package xyz.oribuin.chatemojis;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import xyz.oribuin.chatemojis.command.CmdEmoji;
 import xyz.oribuin.chatemojis.hook.PlaceholderAPIHook;
 import xyz.oribuin.chatemojis.hook.PlaceholderExp;
@@ -13,29 +11,28 @@ import xyz.oribuin.chatemojis.manager.ConfigManager;
 import xyz.oribuin.chatemojis.manager.EmojiManager;
 import xyz.oribuin.chatemojis.manager.GuiManager;
 import xyz.oribuin.chatemojis.manager.MessageManager;
+import xyz.oribuin.orilibrary.OriPlugin;
 
-public class ChatEmojis extends JavaPlugin {
+public class ChatEmojis extends OriPlugin {
 
     private static ChatEmojis instance;
-    private ConfigManager configManager;
-    private EmojiManager emojiManager;
-    private GuiManager guiManager;
-    private MessageManager messageManager;
 
     public static ChatEmojis getInstance() {
         return instance;
     }
 
     @Override
-    public void onEnable() {
-
+    public void enablePlugin() {
         instance = this;
 
         // Register Managers
-        this.configManager = new ConfigManager(this);
-        this.emojiManager = new EmojiManager(this);
-        this.guiManager = new GuiManager(this);
-        this.messageManager = new MessageManager(this);
+        getServer().getScheduler().runTaskAsynchronously(this, () -> {
+            this.getManager(ConfigManager.class);
+            this.getManager(EmojiManager.class);
+            this.getManager(GuiManager.class);
+            this.getManager(MessageManager.class);
+        });
+
         // Register Vault
         VaultHook vaultHook = new VaultHook(this);
         vaultHook.setupEconomy();
@@ -52,30 +49,16 @@ public class ChatEmojis extends JavaPlugin {
         if (PlaceholderAPIHook.enabled()) {
             new PlaceholderExp(this).register();
         }
-
-        this.guiManager.registerMenus();
-        this.saveDefaultConfig();
-        this.reload();
     }
 
-    public void reload() {
-        this.configManager.reload();
-        this.emojiManager.reload();
-        this.guiManager.reload();
-        this.messageManager.reload();
+    @Override
+    public void disablePlugin() {
+
     }
 
     private void registerListeners(Listener... listeners) {
         for (Listener listener : listeners) {
             Bukkit.getPluginManager().registerEvents(listener, this);
         }
-    }
-
-    public EmojiManager getEmojiManager() {
-        return emojiManager;
-    }
-
-    public MessageManager getMessageManager() {
-        return messageManager;
     }
 }

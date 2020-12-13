@@ -5,7 +5,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
-import xyz.oribuin.chatemojis.util.FileUtils;
+import xyz.oribuin.orilibrary.FileUtils;
+import xyz.oribuin.orilibrary.Manager;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +24,14 @@ public class EmojiManager extends Manager {
     }
 
     @Override
-    public void reload() {
-        FileUtils.createFile(plugin, EMOJI_CONFIG);
-        this.emojiConfig = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), EMOJI_CONFIG));
+    public void enable() {
+        FileUtils.createFile(getPlugin(), EMOJI_CONFIG);
+        this.emojiConfig = YamlConfiguration.loadConfiguration(new File(getPlugin().getDataFolder(), EMOJI_CONFIG));
+    }
+
+    @Override
+    public void disable() {
+        // Unused
     }
 
     /**
@@ -75,6 +81,6 @@ public class EmojiManager extends Manager {
     }
 
     private File getDataFile() {
-        return new File(this.plugin.getDataFolder(), EMOJI_CONFIG);
+        return new File(this.getPlugin().getDataFolder(), EMOJI_CONFIG);
     }
 }
