@@ -1,24 +1,24 @@
 package xyz.oribuin.chatemojis.manager;
 
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
-import xyz.oribuin.chatemojis.hook.PlaceholderAPIHook;
-import xyz.oribuin.chatemojis.util.HexUtils;
-import xyz.oribuin.orilibrary.FileUtils;
-import xyz.oribuin.orilibrary.Manager;
-import xyz.oribuin.orilibrary.StringPlaceholders;
+import xyz.oribuin.chatemojis.hook.PAPI;
+import xyz.oribuin.orilibrary.manager.Manager;
+import xyz.oribuin.orilibrary.util.FileUtils;
+import xyz.oribuin.orilibrary.util.HexUtils;
+import xyz.oribuin.orilibrary.util.StringPlaceholders;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 public class MessageManager extends Manager {
-    private static FileConfiguration messageConfig;
+
+    private final ChatEmojis plugin = (ChatEmojis) this.getPlugin();
+
+    private FileConfiguration config;
 
     public MessageManager(ChatEmojis plugin) {
         super(plugin);
@@ -26,23 +26,79 @@ public class MessageManager extends Manager {
 
     @Override
     public void enable() {
-        FileUtils.createFile(this.getPlugin(), "messages.yml");
-        messageConfig = YamlConfiguration.loadConfiguration(new File(this.getPlugin().getDataFolder(), "messages.yml"));
+        this.config = YamlConfiguration.loadConfiguration(FileUtils.createFile(this.plugin, "messages.yml"));
 
-        for (Setting value : Setting.values()) {
-            if (messageConfig.get(value.key) == null) {
-                messageConfig.set(value.key, value.defaultValue);
+        // Set any values that dont exist
+        for (Messages value : Messages.values()) {
+            if (config.get(value.key) == null) {
+                config.set(value.key, value.defaultValue);
             }
-
-            value.load(messageConfig);
         }
 
         try {
-            messageConfig.save(new File(getPlugin().getDataFolder(), "messages.yml"));
+            config.save(new File(plugin.getDataFolder(), "messages.yml"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
+    }
+
+    public FileConfiguration getConfig() {
+        return config;
+    }
+
+    /**
+     * Send a configuration message without any placeholders
+     *
+     * @param receiver  The CommandSender who receives the message.
+     * @param messageId The message path
+     */
+    public void send(CommandSender receiver, String messageId) {
+        this.send(receiver, messageId, StringPlaceholders.empty());
+    }
+
+    /**
+     * Send a configuration messageId with placeholders.
+     *
+     * @param receiver     The CommandSender who receives the messageId.
+     * @param messageId    The messageId path
+     * @param placeholders The Placeholders
+     */
+    public void send(CommandSender receiver, String messageId, StringPlaceholders placeholders) {
+        final String msg = this.getConfig().getString(messageId);
+
+        if (msg == null) {
+            receiver.sendMessage(HexUtils.colorify("&c&lError &7| &fThis is an invalid message in the messages file, Please contact the server owner about this issue. (Id: " + messageId + ")"));
+            return;
+        }
+
+        final String prefix = this.getConfig().getString("prefix");
+        receiver.sendMessage(HexUtils.colorify(prefix + PAPI.apply(receiver instanceof Player ? (Player) receiver : null, placeholders.apply(msg))));
+    }
+
+    /**
+     * Send a raw message to the receiver without any placeholders
+     *
+     * Use this to send a message to a player without the message being defined in a config.
+     *
+     * @param receiver The message receiver
+     * @param message The raw message
+     */
+    public void sendRaw(CommandSender receiver, String message) {
+        this.sendRaw(receiver, message, StringPlaceholders.empty());
+    }
+
+    /**
+     * Send a raw message to the receiver with placeholders.
+     *
+     * Use this to send a message to a player without the message being defined in a config.
+     *
+     * @param receiver The message receiver
+     * @param message The message
+     * @param placeholders Message Placeholders.
+     */
+    public void sendRaw(CommandSender receiver, String message, StringPlaceholders placeholders) {
+        receiver.sendMessage(HexUtils.colorify(PAPI.apply(receiver instanceof Player ? (Player) receiver : null, placeholders.apply(message))));
     }
 
     @Override
@@ -50,56 +106,14 @@ public class MessageManager extends Manager {
 
     }
 
-    public void sendMessage(CommandSender sender, String messageId) {
-        this.sendMessage(sender, messageId, StringPlaceholders.empty());
-    }
-
-    public void sendMessage(CommandSender sender, String messageId, StringPlaceholders placeholders) {
-
-        if (messageConfig.getString(messageId) == null) {
-            sender.spigot().sendMessage(TextComponent.fromLegacyText(HexUtils.colorify("{#ff4072}" + messageId + " is null in messages.yml")));
-            return;
-        }
-
-        if (!messageConfig.getString(messageId).isEmpty()) {
-            final String msg = messageConfig.getString("prefix") + placeholders.apply(messageConfig.getString(messageId));
-
-            sender.spigot().sendMessage(TextComponent.fromLegacyText(HexUtils.colorify(this.parsePlaceholders(sender, msg))));
-        }
-    }
-
-    public FileConfiguration getMessageConfig() {
-        return messageConfig;
-    }
-
-    private String parsePlaceholders(CommandSender sender, String message) {
-        if (sender instanceof Player)
-            return PlaceholderAPIHook.apply((Player) sender, message);
-
-        return message;
-    }
-
-    public enum Setting {
+    private enum Messages {
         PREFIX("prefix", "#9494edChatEmojis #cbcbd3» "),
         CREATED_EMOJI("created-emoji", "&bYou have created the emoji &e%replacement%&b! Use this by typing &e%check%&b!"),
         MONEY_TAKEN("money-taken", "&bYou have bought the emoji &e%emoji&b for $&e%money%&b!"),
         REMOVED_EMOJI("removed-emoji", "&bYou have deleted the emoji &e%emoji%&b!"),
         OPENED_MENU("opened-menu", "&bYou have opened the menu for &e%player%&b!"),
 
-        HELP_MESSAGE("help-message", Arrays.asList(
-                " ",
-                " <rainbow:0.7>ChatEmojis &f» &bCommands",
-                " &f• &b/emojis help &e- &bShow this message.",
-                " &f• &b/emojis create &e<Name> <Keyword> <Emoji> &f- &bCreate an emoji.",
-                " &f• &b/emojis remove &e<Keyword> &f- &bRemove an emoji.",
-                " &f• &b/emojis menu &e[Player] &f- &bOpen the emoji menu.",
-                " &f• &b/emojis reload &f- &bReload the plugin.",
-                " ",
-                " &f» &bPlugin created by <g:#4776E6:#8E54E9>Oribuin",
-                " "
-        )),
-
-        RELOAD("reload", "&bYou have reloaded ChatEmojis (&e%version%&b)"),
+        RELOAD("reload", "&bYou have reloaded ChatEmojis"),
         INVALID_PERMISSION("invalid-permission", "&cYou do not have permission to execute this command."),
         INVALID_PLAYER("invalid-player", "&cPlease enter a valid player."),
         INVALID_ARGUMENTS("invalid-arguments", "&cPlease provide valid arguments."),
@@ -109,115 +123,14 @@ public class MessageManager extends Manager {
         UNKNOWN_COMMAND("unknown-command", "&cPlease include a valid command."),
         PLAYER_ONLY("player-only", "&cOnly a player can execute this command.");
 
-
         private final String key;
         private final Object defaultValue;
-        private Object value = null;
 
-        Setting(String key, Object defaultValue) {
+        Messages(final String key, final Object defaultValue) {
             this.key = key;
             this.defaultValue = defaultValue;
         }
 
-
-        /**
-         * Gets the setting as a boolean
-         *
-         * @return The setting as a boolean
-         */
-        public boolean getBoolean() {
-            this.loadValue();
-
-            return (boolean) this.value;
-        }
-
-        /**
-         * @return the setting as an int
-         */
-        public int getInt() {
-            this.loadValue();
-
-            return (int) this.getNumber();
-        }
-
-        /**
-         * @return the setting as a long
-         */
-        public long getLong() {
-            this.loadValue();
-
-            return (long) this.getNumber();
-        }
-
-        /**
-         * @return the setting as a double
-         */
-        public double getDouble() {
-            this.loadValue();
-
-            return this.getNumber();
-        }
-
-        /**
-         * @return the setting as a float
-         */
-        public float getFloat() {
-            this.loadValue();
-
-            return (float) this.getNumber();
-        }
-
-        /**
-         * @return the setting as a String
-         */
-        public String getString() {
-            this.loadValue();
-
-            return (String) this.value;
-        }
-
-        private double getNumber() {
-            this.loadValue();
-
-            if (this.value instanceof Integer) {
-                return (int) this.value;
-            } else if (this.value instanceof Short) {
-                return (short) this.value;
-            } else if (this.value instanceof Byte) {
-                return (byte) this.value;
-            } else if (this.value instanceof Float) {
-                return (float) this.value;
-            }
-
-            return (double) this.value;
-        }
-
-        /**
-         * @return the setting as a string list
-         */
-        @SuppressWarnings("unchecked")
-        public List<String> getStringList() {
-            this.loadValue();
-
-            return (List<String>) this.value;
-        }
-
-        /**
-         * Loads the value from the config and caches it
-         */
-        private void load(FileConfiguration config) {
-            this.value = config.get(this.key);
-        }
-
-        private void loadValue() {
-            if (this.value != null)
-                return;
-
-            this.value = ChatEmojis.getInstance().getConfig().get(this.key);
-
-            if (this.value == null) {
-                ChatEmojis.getInstance().getConfig().set(this.key, this.defaultValue);
-            }
-        }
     }
+
 }

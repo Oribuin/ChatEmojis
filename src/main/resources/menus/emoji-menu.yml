@@ -1,0 +1,65 @@
+# Note for the Pagination, The plugin will fill any empty slots with the emojis
+# I recommend filling any slots you dont want the emojis to takeup with LIGHT_GRAY_STAINED_GLASS
+
+gui-name: 'Chat Emojis'
+gui-rows: 6
+
+# The message displayed when the emoji creator isnt defined
+no-creator: 'None'
+
+emoji:
+  material: NAME_TAG
+  name: '&b&lEmoji &7» &f%name%'
+  lore:
+    - '&7» Input: &f%check%'
+    - '&7» Emoji: &f%emoji%'
+    - '&7» Creator: &f%creator%'
+  glow: true
+  amount: 1
+
+# The slots that the filler item will be displayed in
+filler-slots: [ 45, 46, 47, 48, 49, 50, 51, 52, 53 ]
+
+# The filler Item
+filler:
+  material: GRAY_STAINED_GLASS_PANE
+  name: "&a"
+  amount: 1
+  glow: false
+  lore: [ ]
+
+previous-page:
+  material: PAPER
+  name: '&f« &b&lPrevious Page'
+  lore: [ ]
+  glow: false
+  amount: 1
+  slot: 47
+  # CustomModelData, -1 disables it
+  model: -1
+
+next-page:
+  material: PAPER
+  name: '&b&lNext Page &f»'
+  lore: [ ]
+  glow: false
+  amount: 1
+  slot: 51
+  # CustomModelData, -1 disables it
+  model: -1
+
+extra-items:
+  1:
+    material: PLAYER_HEAD
+    name: '&bWhat are ChatEmojis?'
+    lore:
+      - '&7You can use these emojis to'
+      - '&7express how you feel inside the chat'
+      - ' '
+      - '&7Just type the required input in chat!'
+    glow: false
+    amount: 1
+    slot: 49
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODlhOTk1OTI4MDkwZDg0MmQ0YWZkYjIyOTZmZmUyNGYyZTk0NDI3MjIwNWNlYmE4NDhlZTQwNDZlMDFmMzE2OCJ9fX0=
+
+

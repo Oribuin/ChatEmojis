@@ -5,9 +5,10 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import xyz.oribuin.chatemojis.ChatEmojis;
-import xyz.oribuin.orilibrary.Manager;
+import xyz.oribuin.orilibrary.manager.Manager;
 
 public class VaultHook extends Manager {
+
     private static Economy vaultEco = null;
     private static Permission permission = null;
 

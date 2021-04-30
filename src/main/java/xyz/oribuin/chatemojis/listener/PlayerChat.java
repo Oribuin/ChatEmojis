@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.manager.EmojiManager;
+import xyz.oribuin.chatemojis.obj.Emoji;
 
 public class PlayerChat implements Listener {
 
@@ -18,22 +19,17 @@ public class PlayerChat implements Listener {
 
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     public void onChat(AsyncPlayerChatEvent event) {
-        ConfigurationSection emojiSec = this.plugin.getManager(EmojiManager.class).getEmojiSec();
         Player player = event.getPlayer();
 
         if (plugin.getConfig().getStringList("disabled-worlds").contains(player.getWorld().getName())) return;
 
-        for (String emoji : emojiSec.getKeys(false)) {
-            String check = emojiSec.getString(emoji + ".check");
-            String replacement = emojiSec.getString(emoji + ".replacement");
+        for (Emoji emoji : this.plugin.getManager(EmojiManager.class).getCachedEmojis()) {
 
-            if (!player.hasPermission("chatemojis.emoji.*") && !player.hasPermission("chatemojis.emoji." + emoji)) continue;
-            if (check == null) continue;
-            if (replacement == null) continue;
+            if (!player.hasPermission("chatemojis.emoji.*") && !player.hasPermission("chatemojis.emoji." + emoji.getId())) continue;
 
-            event.setMessage(event.getMessage().replace(check.toLowerCase(), replacement));
+            event.setMessage(event.getMessage().replace(emoji.getCheck().toLowerCase(), emoji.getReplacement()));
         }
     }
 }

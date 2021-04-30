@@ -16,21 +16,6 @@ public class PlaceholderExp extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String placeholder) {
-        ConfigurationSection emojiSec = this.plugin.getManager(EmojiManager.class).getEmojiSec();
-        if (emojiSec == null) return null;
-
-        if (placeholder == null)
-            return null;
-
-        if (placeholder.equalsIgnoreCase("unlocked"))
-            return String.valueOf(emojiSec.getKeys(false).stream().filter(emoji -> player.hasPermission("chatemojis.emoji." + emoji)).count());
-
-        if (placeholder.equalsIgnoreCase("total"))
-            return String.valueOf(plugin.getManager(EmojiManager.class).getEmojiTotal());
-
-        if (placeholder.equals("created"))
-            return String.valueOf(plugin.getManager(EmojiManager.class).getEmojiCreated(player));
-
         return null;
     }
 
