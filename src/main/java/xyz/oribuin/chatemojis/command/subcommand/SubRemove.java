@@ -14,7 +14,7 @@ import java.util.List;
 @SubCommand.Info(
         names = {"delete"},
         usage = "/emojis remove <name> ",
-        permission = "chatemojis.delete",
+        permission = "chatemojis.remove",
         command = CmdEmoji.class
 )
 public class SubRemove extends SubCommand {

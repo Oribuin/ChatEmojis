@@ -11,7 +11,6 @@ import xyz.oribuin.chatemojis.command.subcommand.SubRemove;
 import xyz.oribuin.chatemojis.manager.MessageManager;
 import xyz.oribuin.chatemojis.menu.EmojiGUI;
 import xyz.oribuin.orilibrary.command.Command;
-import xyz.oribuin.orilibrary.command.SubCommand;
 import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull;
 
 @Command.Info(

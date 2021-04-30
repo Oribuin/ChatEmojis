@@ -1,8 +1,0 @@
-Changelog:
-    Fixed a ton of issues regarding the guis
-    Config.yml and Messages.yml will now automatically update with values that dont exist
-    Added API & Event EmojiCreateEvent
-
-Code Upgrades & Changes:
-    Cleaned up code with comments & such
-    Moved commands to individual classes
