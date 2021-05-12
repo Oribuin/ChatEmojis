@@ -1,11 +1,19 @@
 # Note for the Pagination, The plugin will fill any empty slots with the emojis
 # I recommend filling any slots you dont want the emojis to takeup with LIGHT_GRAY_STAINED_GLASS
-
+# Available Actions: [BROADCAST], [CLOSE], [PLAYER], [CONSOLE], [MESSAGE], [SOUND]
 gui-name: 'Chat Emojis'
 gui-rows: 6
 
 # The message displayed when the emoji creator isnt defined
 no-creator: 'None'
+
+# Should the plugin only display emojis that the player has access to
+display-accessed-only: true
+
+# Message shown for %permission%
+permission-status:
+  locked: '&cLocked'
+  unlocked: '&aUnlocked'
 
 emoji:
   material: NAME_TAG
@@ -14,8 +22,16 @@ emoji:
     - '&7» Input: &f%check%'
     - '&7» Emoji: &f%emoji%'
     - '&7» Creator: &f%creator%'
+    - '&7» Status: &f%permission%'
   glow: true
   amount: 1
+  actions:
+    - '[MESSAGE]&fEmoji &b%name% &f-» &b%emoji%'
+    - '[CLOSE]'
+    - '[BROADCAST]<r:0.7>Helloooooo'
+    - '[PLAYER]say hi'
+    - '[CONSOLE]say hi'
+    - '[SOUND]ENTITY_ARROW_HIT_PLAYER'
 
 # The slots that the filler item will be displayed in
 filler-slots: [ 45, 46, 47, 48, 49, 50, 51, 52, 53 ]
@@ -61,5 +77,6 @@ extra-items:
     amount: 1
     slot: 49
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODlhOTk1OTI4MDkwZDg0MmQ0YWZkYjIyOTZmZmUyNGYyZTk0NDI3MjIwNWNlYmE4NDhlZTQwNDZlMDFmMzE2OCJ9fX0=
-
-
+    actions:
+      - '[MESSAGE]hewwo'
+      - '[CLOSE]'

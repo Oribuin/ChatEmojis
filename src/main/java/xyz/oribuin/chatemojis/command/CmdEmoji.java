@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.command.subcommand.SubCreate;
+import xyz.oribuin.chatemojis.command.subcommand.SubMenu;
 import xyz.oribuin.chatemojis.command.subcommand.SubReload;
 import xyz.oribuin.chatemojis.command.subcommand.SubRemove;
 import xyz.oribuin.chatemojis.manager.MessageManager;
@@ -19,7 +20,7 @@ import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull;
         permission = "chatemojis.use",
         playerOnly = false,
         usage = "/emojis",
-        subcommands = {SubCreate.class, SubReload.class, SubRemove.class},
+        subcommands = {SubCreate.class, SubReload.class, SubRemove.class, SubMenu.class},
         aliases = {"chatemojis"}
 )
 public class CmdEmoji extends Command {

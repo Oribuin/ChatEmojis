@@ -10,6 +10,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import xyz.oribuin.chatemojis.ChatEmojis;
+import xyz.oribuin.chatemojis.action.Action;
+import xyz.oribuin.chatemojis.action.type.*;
 import xyz.oribuin.chatemojis.hook.PAPI;
 import xyz.oribuin.orilibrary.util.FileUtils;
 import xyz.oribuin.orilibrary.util.HexUtils;
@@ -18,11 +20,14 @@ import xyz.oribuin.orilibrary.util.StringPlaceholders;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class Menu {
     private final ChatEmojis plugin;
     private final String guiName;
+
+    private final List<Action> actions = Arrays.asList(new BroadcastAction(), new CloseAction(), new CommandAction(), new ConsoleAction(), new MessageAction(), new SoundAction());
 
     private FileConfiguration menuConfig;
 
@@ -69,7 +74,10 @@ public abstract class Menu {
                     .addPlaceholder("name", emoji.getName())
                     .addPlaceholder("id", emoji.getId())
                     .addPlaceholder("creator", emoji.getCreator() != null ? Bukkit.getOfflinePlayer(emoji.getCreator()).getName() : this.getMenuConfig().getString("no-creator"))
+                    .addPlaceholder("permission", player.hasPermission("chatemojis.emoji." + emoji.getId().toLowerCase()) ?
+                            HexUtils.colorify(this.getMenuConfig().getString("permission-status.unlocked")) : HexUtils.colorify(this.getMenuConfig().getString("permission-status.locked")))
                     .build();
+
         }
 
         // Create the lore
@@ -102,12 +110,47 @@ public abstract class Menu {
         return itemStack;
     }
 
+    /**
+     * Run a function from items with specific functionalities based on the actions
+     *
+     * @param player       The player
+     * @param path         The path to the GUI Item
+     * @param placeholders Any String Placeholders.
+     */
+    public void clickEvent(Player player, String path, StringPlaceholders placeholders) {
+
+        // yes this is scuffed, i am aware
+        this.getMenuConfig().getStringList(path + ".actions").forEach(s -> {
+
+            for (Action action : this.actions) {
+
+                if (s.startsWith("[" + action.actionType() + "]")) {
+                    int requiredLength = 2 + action.actionType().length();
+
+                    final String msg = s.substring(requiredLength);
+                    action.executeAction(plugin, player, HexUtils.colorify(PAPI.apply(player, placeholders.apply(msg))));
+                }
+
+            }
+
+        });
+
+    }
+
+    /**
+     * Format a string with PAPI Placeholders, Normal String placeholders and colorize it
+     *
+     * @param string       The string
+     * @param player       The player
+     * @param placeholders Any potential String
+     * @return string formatted.
+     */
     public String format(String string, Player player, StringPlaceholders placeholders) {
         return HexUtils.colorify(PAPI.apply(player, placeholders.apply(string)));
     }
 
-    public GuiItem fillerItem() {
-        return ItemBuilder.from(this.getGUIItem("filler", null, null)).asGuiItem();
+    public GuiItem fillerItem(Player player) {
+        return ItemBuilder.from(this.getGUIItem("filler", null, null)).asGuiItem(event -> clickEvent(player, "filler", StringPlaceholders.empty()));
     }
 
     public ChatEmojis getPlugin() {

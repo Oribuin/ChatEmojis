@@ -42,7 +42,10 @@ public class ConfigManager extends Manager {
     }
 
     private enum Setting {
-        ;
+        CMD_SETTINGS_ECO_ENABLED("command-settings.economy", true),
+        CMD_SETTINGS_ECO_CREATE("command-settings.create-price", 500.0),
+        CMD_SETTINGS_PERM_ENABLED("command-settings.add-perm", false),
+        DISABLED_WORLDS("disabled-worlds", Arrays.asList("disabled-world-1", "disabled-world-2"));
 
         private final String key;
         private final Object defaultValue;

@@ -1,25 +1,27 @@
 package xyz.oribuin.chatemojis.command.subcommand;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.command.CmdEmoji;
-import xyz.oribuin.chatemojis.manager.EmojiManager;
 import xyz.oribuin.chatemojis.manager.MessageManager;
+import xyz.oribuin.chatemojis.menu.EmojiGUI;
 import xyz.oribuin.orilibrary.command.SubCommand;
 import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull;
 import xyz.oribuin.orilibrary.util.StringPlaceholders;
 
 @SubCommand.Info(
-        names = {"reload"},
-        usage = "/emojis reload",
-        permission = "chatemojis.reload",
+        names = {"menu"},
+        usage = "/emojis menu <player>",
+        permission = "chatemojis.player",
         command = CmdEmoji.class
 )
-public class SubReload extends SubCommand {
+public class SubMenu extends SubCommand {
 
     private final ChatEmojis plugin = (ChatEmojis) this.getOriPlugin();
 
-    public SubReload(ChatEmojis plugin, CmdEmoji command) {
+    public SubMenu(ChatEmojis plugin, CmdEmoji command) {
         super(plugin, command);
     }
 
@@ -27,16 +29,21 @@ public class SubReload extends SubCommand {
     public void executeArgument(@NotNull CommandSender sender, @NotNull String[] args) {
 
         final MessageManager msg = this.plugin.getManager(MessageManager.class);
-        final EmojiManager emojiManager = this.plugin.getManager(EmojiManager.class);
 
-        // Reload main config files
-        emojiManager.disable();
-        emojiManager.enable();
+        if (args.length != 2) {
+            msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.getAnnotation().usage()));
+            return;
+        }
 
-        msg.disable();
-        msg.enable();
 
-        msg.send(sender, "reload", StringPlaceholders.single("version", "1.3.1"));
+        final Player player = Bukkit.getPlayer(args[1]);
+
+        if (player == null) {
+            msg.send(sender, "invalid-player");
+            return;
+        }
+
+        new EmojiGUI(this.plugin).createGUI(player);
     }
 
 }
