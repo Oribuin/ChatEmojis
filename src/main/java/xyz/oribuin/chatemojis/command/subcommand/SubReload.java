@@ -3,7 +3,6 @@ package xyz.oribuin.chatemojis.command.subcommand;
 import org.bukkit.command.CommandSender;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.command.CmdEmoji;
-import xyz.oribuin.chatemojis.manager.EmojiManager;
 import xyz.oribuin.chatemojis.manager.MessageManager;
 import xyz.oribuin.orilibrary.command.SubCommand;
 import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull;
@@ -27,16 +26,9 @@ public class SubReload extends SubCommand {
     public void executeArgument(@NotNull CommandSender sender, @NotNull String[] args) {
 
         final MessageManager msg = this.plugin.getManager(MessageManager.class);
-        final EmojiManager emojiManager = this.plugin.getManager(EmojiManager.class);
 
-        // Reload main config files
-        emojiManager.disable();
-        emojiManager.enable();
-
-        msg.disable();
-        msg.enable();
-
-        msg.send(sender, "reload", StringPlaceholders.single("version", "1.3.1"));
+        this.plugin.reload();
+        msg.send(sender, "reload", StringPlaceholders.single("version", this.plugin.getDescription().getVersion()));
     }
 
 }

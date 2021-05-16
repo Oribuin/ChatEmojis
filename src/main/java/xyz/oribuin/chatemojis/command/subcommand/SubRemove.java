@@ -12,7 +12,7 @@ import xyz.oribuin.orilibrary.util.StringPlaceholders;
 import java.util.List;
 
 @SubCommand.Info(
-        names = {"delete"},
+        names = {"remove"},
         usage = "/emojis remove <name> ",
         permission = "chatemojis.remove",
         command = CmdEmoji.class
