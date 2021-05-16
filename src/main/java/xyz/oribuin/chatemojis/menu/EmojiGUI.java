@@ -51,7 +51,7 @@ public class EmojiGUI extends Menu {
         if (section != null) {
             section.getKeys(false)
                     .forEach(s -> gui.setItem(section.getInt(s + ".slot"), ItemBuilder.from(this.getGUIItem("extra-items." + s, null, player))
-                            .asGuiItem(event -> clickEvent(player, "extra-items." + s , StringPlaceholders.empty()))));
+                            .asGuiItem(event -> clickEvent(player, "extra-items." + s, StringPlaceholders.empty()))));
         }
 
         final String emojiUnlocked = this.getMenuConfig().getString("permission-status.unlocked");

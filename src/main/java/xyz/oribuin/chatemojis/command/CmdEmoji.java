@@ -1,6 +1,5 @@
 package xyz.oribuin.chatemojis.command;
 
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -46,13 +45,6 @@ public class CmdEmoji extends Command {
             return;
         }
 
-        // TODO, Delete
-        if (args.length == 1 && args[0].equalsIgnoreCase("nbt")) {
-            final Player player = (Player) sender;
-            player.sendMessage(NBTEditor.getKeys(player.getInventory().getItemInMainHand()).toString());
-            return;
-        }
-
         final FileConfiguration config = this.plugin.getManager(MessageManager.class).getConfig();
         final String prefix = config.getString("prefix");
         final String unknownCommand = prefix + config.getString("unknown-command");
@@ -95,7 +87,7 @@ public class CmdEmoji extends Command {
 
             case 3: {
                 if (args[0].equalsIgnoreCase("create")) tabComplete.add("<check>");
-                
+
                 else return playerList(sender);
 
                 break;

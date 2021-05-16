@@ -1,7 +1,5 @@
 package xyz.oribuin.chatemojis.obj;
 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull;
 import xyz.oribuin.orilibrary.libs.jetbrains.annotations.Nullable;
 

@@ -35,6 +35,7 @@ public class PlaceholderExp extends PlaceholderExpansion {
 
         return null;
     }
+
     @Override
     public @NotNull String getIdentifier() {
         return "ChatEmojis".toLowerCase();
