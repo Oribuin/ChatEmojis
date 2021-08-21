@@ -1,18 +1,16 @@
-package xyz.oribuin.chatemojis.command.subcommand;
+package xyz.oribuin.chatemojis.command;
 
 import org.bukkit.command.CommandSender;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.command.CmdEmoji;
 import xyz.oribuin.chatemojis.manager.MessageManager;
 import xyz.oribuin.orilibrary.command.SubCommand;
-import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull;
 import xyz.oribuin.orilibrary.util.StringPlaceholders;
 
 @SubCommand.Info(
         names = {"reload"},
         usage = "/emojis reload",
-        permission = "chatemojis.reload",
-        command = CmdEmoji.class
+        permission = "chatemojis.reload"
 )
 public class SubReload extends SubCommand {
 
@@ -23,7 +21,7 @@ public class SubReload extends SubCommand {
     }
 
     @Override
-    public void executeArgument(@NotNull CommandSender sender, @NotNull String[] args) {
+    public void executeArgument(CommandSender sender, String[] args) {
 
         final MessageManager msg = this.plugin.getManager(MessageManager.class);
 

@@ -1,4 +1,4 @@
-package xyz.oribuin.chatemojis.command.subcommand;
+package xyz.oribuin.chatemojis.command;
 
 import org.bukkit.command.CommandSender;
 import xyz.oribuin.chatemojis.ChatEmojis;
@@ -14,8 +14,7 @@ import java.util.List;
 @SubCommand.Info(
         names = {"remove"},
         usage = "/emojis remove <name> ",
-        permission = "chatemojis.remove",
-        command = CmdEmoji.class
+        permission = "chatemojis.remove"
 )
 public class SubRemove extends SubCommand {
 
@@ -31,7 +30,7 @@ public class SubRemove extends SubCommand {
         final MessageManager msg = this.plugin.getManager(MessageManager.class);
 
         if (args.length != 2) {
-            msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.getAnnotation().usage()));
+            msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.getInfo().usage()));
             return;
         }
 

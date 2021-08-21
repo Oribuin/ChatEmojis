@@ -1,65 +1,89 @@
 package xyz.oribuin.chatemojis.menu;
 
-import me.mattstudios.mfgui.gui.components.ItemBuilder;
-import me.mattstudios.mfgui.gui.guis.PaginatedGui;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.manager.EmojiManager;
 import xyz.oribuin.chatemojis.obj.Emoji;
 import xyz.oribuin.chatemojis.obj.Menu;
+import xyz.oribuin.gui.Item;
+import xyz.oribuin.gui.PaginatedGui;
+import xyz.oribuin.orilibrary.util.FileUtils;
 import xyz.oribuin.orilibrary.util.HexUtils;
 import xyz.oribuin.orilibrary.util.StringPlaceholders;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 public class EmojiGUI extends Menu {
-
-    private final ChatEmojis plugin = this.getPlugin();
-    private final PaginatedGui gui;
-
-    public EmojiGUI(ChatEmojis plugin) {
+    public EmojiGUI(ChatEmojis plugin, Player player) {
         super(plugin, "emoji-menu");
         super.enable();
 
-        this.gui = new PaginatedGui(this.getMenuConfig().getInt("gui-rows"), this.getMenuConfig().getString("gui-name"));
-        this.gui.setDefaultClickAction(event -> {
+        if (this.getMenuConfig().get("config-version") == null) {
+            final File folder = new File(plugin.getDataFolder(), "menus");
+
+            new File(folder, "emoji-menu.yml").renameTo(new File(folder, "old-menu.yml"));
+
+            final File newFile = FileUtils.createFile(plugin, "menus", "emoji-menu.yml");
+            this.setMenuConfig(YamlConfiguration.loadConfiguration(newFile));
+
+        }
+
+        List<Integer> pageSlots = new ArrayList<>();
+
+        if (this.getMenuConfig().get("page-slots") != null)
+            pageSlots = this.getMenuConfig().getIntegerList("page-slots");
+        else if (this.getMenuConfig().get("page-range") != null) {
+
+            // dear god
+            final List<Integer> pageRange = this.getMenuConfig().getIntegerList("page-range");
+            if (pageRange.size() == 2) {
+
+                for (int i = pageRange.get(0); i < pageRange.get(pageRange.size() - 1); i++)
+                    pageSlots.add(i);
+
+            }
+        } else {
+            for (int i = 0; i < 44; i++)
+                pageSlots.add(i);
+        }
+
+        PaginatedGui gui = new PaginatedGui(this.getMenuConfig().getInt("gui-rows") * 9, this.getMenuConfig().getString("gui-name"), pageSlots);
+        gui.setDefaultClickFunction(event -> {
             event.setCancelled(true);
             event.setResult(Event.Result.DENY);
 
             ((Player) event.getWhoClicked()).updateInventory();
         });
 
-    }
+        // oh boy look at these variables to prevent an incredibly long line
+        final String materialName = Optional.ofNullable(this.getMenuConfig().getString("filler")).orElse(Material.GRAY_STAINED_GLASS_PANE.name());
+        final Material filler = Optional.ofNullable(Material.matchMaterial(materialName)).orElse(Material.GRAY_STAINED_GLASS_PANE);
 
-    /**
-     * Create and open the gui for the player
-     *
-     * @param player The player
-     */
-    public void createGUI(Player player) {
+        gui.setItems(this.getMenuConfig().getIntegerList("filler-slots"), Item.filler(filler).getItem(), event -> {});
 
-        this.getMenuConfig().getIntegerList("filler-slots").forEach(i -> gui.setItem(i, this.fillerItem(player)));
-
-        gui.setItem(this.getMenuConfig().getInt("previous-page.slot"), ItemBuilder.from(this.getGUIItem("previous-page", null, player))
-                .asGuiItem(x -> gui.previous()));
-
-        gui.setItem(this.getMenuConfig().getInt("next-page.slot"), ItemBuilder.from(this.getGUIItem("next-page", null, player))
-                .asGuiItem(x -> gui.next()));
+        gui.setItem(this.getMenuConfig().getInt("previous-page.slot"), this.getGUIItem("previous-page", null, player), event -> gui.previous(event.getWhoClicked()));
+        gui.setItem(this.getMenuConfig().getInt("next-page.slot"), this.getGUIItem("next-page", null, player), event -> gui.next(event.getWhoClicked()));
 
         final ConfigurationSection section = this.getMenuConfig().getConfigurationSection("extra-items");
         if (section != null) {
-            section.getKeys(false)
-                    .forEach(s -> gui.setItem(section.getInt(s + ".slot"), ItemBuilder.from(this.getGUIItem("extra-items." + s, null, player))
-                            .asGuiItem(event -> clickEvent(player, "extra-items." + s, StringPlaceholders.empty()))));
+            section.getKeys(false).forEach(s -> gui.setItem(section.getInt(s + ".slot"), this.getGUIItem("extra-items." + s, null, player), event -> clickEvent(player, "extra-items." + s, StringPlaceholders.empty())));
         }
 
         final String emojiUnlocked = this.getMenuConfig().getString("permission-status.unlocked");
         final String emojiLocked = this.getMenuConfig().getString("permission-status-locked");
 
-        for (Emoji emoji : this.plugin.getManager(EmojiManager.class).getCachedEmojis()) {
+        for (Emoji emoji : this.getPlugin().getManager(EmojiManager.class).getCachedEmojis()) {
 
-            if (getMenuConfig().getBoolean("display-accessed-only") && !player.hasPermission("chatemojis.emoji.*") && !player.hasPermission("chatemojis.emoji." + emoji.getId())) continue;
+            if (getMenuConfig().getBoolean("display-accessed-only") && !player.hasPermission("chatemojis.emoji.*") && !player.hasPermission("chatemojis.emoji." + emoji.getId()))
+                continue;
 
             StringPlaceholders placeholders = StringPlaceholders.builder("emoji", emoji.getReplacement())
                     .addPlaceholder("check", emoji.getCheck())
@@ -70,7 +94,7 @@ public class EmojiGUI extends Menu {
                             HexUtils.colorify(emojiUnlocked != null ? emojiUnlocked : "Unlocked") : HexUtils.colorify(emojiLocked != null ? emojiLocked : "Locked"))
                     .build();
 
-            gui.addItem(ItemBuilder.from(this.getGUIItem("emoji", emoji, player)).asGuiItem(event -> clickEvent(player, "emoji", placeholders)));
+            gui.addPageItem(this.getGUIItem("emoji", emoji, player), event -> clickEvent(player, "emoji", placeholders));
         }
 
         gui.open(player);

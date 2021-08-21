@@ -1,8 +1,6 @@
 package xyz.oribuin.chatemojis;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Listener;
 import xyz.oribuin.chatemojis.command.CmdEmoji;
 import xyz.oribuin.chatemojis.hook.PAPI;
 import xyz.oribuin.chatemojis.hook.PlaceholderExp;
@@ -30,15 +28,11 @@ public class ChatEmojis extends OriPlugin {
         vaultHook.setupEconomy();
         vaultHook.setupPermissions();
 
-
         // Get Command Messages.
-        final FileConfiguration config = this.getManager(MessageManager.class).getConfig();
-        final String prefix = config.getString("prefix");
-        final String playerOnly = prefix + config.getString("player-only");
-        final String noPerm = prefix + config.getString("invalid-permission");
+        final MessageManager msg = this.getManager(MessageManager.class);
 
         // Register command
-        new CmdEmoji(this).register(playerOnly, noPerm);
+        new CmdEmoji(this).register(sender -> msg.send(sender, "player-only"), sender -> msg.send(sender, "invalid-permission"));
 
         // Register Listeners
         Bukkit.getPluginManager().registerEvents(new PlayerChat(this), this);

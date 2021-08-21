@@ -1,4 +1,4 @@
-package xyz.oribuin.chatemojis.command.subcommand;
+package xyz.oribuin.chatemojis.command;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -17,8 +17,7 @@ import xyz.oribuin.orilibrary.util.StringPlaceholders;
 @SubCommand.Info(
         names = {"create"},
         usage = "/emojis create <name> <check> <emoji>",
-        permission = "chatemojis.create",
-        command = CmdEmoji.class
+        permission = "chatemojis.create"
 )
 public class SubCreate extends SubCommand {
 
@@ -35,7 +34,7 @@ public class SubCreate extends SubCommand {
 
         // Check if the sender has provided the right amount of arguments
         if (args.length < 4) {
-            msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.getAnnotation().usage()));
+            msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.getInfo().usage()));
             return;
         }
 

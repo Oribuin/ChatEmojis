@@ -1,8 +1,5 @@
 package xyz.oribuin.chatemojis.obj;
 
-import io.github.bananapuncher714.nbteditor.NBTEditor;
-import me.mattstudios.mfgui.gui.components.ItemBuilder;
-import me.mattstudios.mfgui.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,6 +10,7 @@ import xyz.oribuin.chatemojis.ChatEmojis;
 import xyz.oribuin.chatemojis.action.Action;
 import xyz.oribuin.chatemojis.action.type.*;
 import xyz.oribuin.chatemojis.hook.PAPI;
+import xyz.oribuin.gui.Item;
 import xyz.oribuin.orilibrary.util.FileUtils;
 import xyz.oribuin.orilibrary.util.HexUtils;
 import xyz.oribuin.orilibrary.util.StringPlaceholders;
@@ -29,6 +27,7 @@ public abstract class Menu {
 
     private final List<Action> actions = Arrays.asList(new BroadcastAction(), new CloseAction(), new CommandAction(), new ConsoleAction(), new MessageAction(), new SoundAction());
 
+    private File file;
     private FileConfiguration menuConfig;
 
     public Menu(ChatEmojis plugin, String guiName) {
@@ -38,8 +37,8 @@ public abstract class Menu {
     }
 
     public void enable() {
-        FileUtils.createMenuFile(plugin, guiName);
-        this.menuConfig = YamlConfiguration.loadConfiguration(this.getMenuFile());
+        this.file = FileUtils.createFile(plugin, "menus", guiName + ".yml");
+        this.menuConfig = YamlConfiguration.loadConfiguration(file);
     }
 
     public FileConfiguration getMenuConfig() {
@@ -86,7 +85,7 @@ public abstract class Menu {
         config.getStringList(path + ".lore").forEach(s -> lore.add(format(s, player, finalPlaceholders)));
 
         // Create the item builder
-        final ItemBuilder item = ItemBuilder.from(Material.valueOf(config.getString(path + ".material")))
+        final Item.Builder item = new Item.Builder(Material.valueOf(config.getString(path + ".material")))
                 .setName(format(config.getString(path + ".name"), player, finalPlaceholders))
                 .setLore(lore)
                 .setAmount(config.getInt(path + ".amount"))
@@ -97,17 +96,15 @@ public abstract class Menu {
 
         // Check if can apply texture
         if (texture != null) {
-            item.setSkullTexture(texture);
+            item.setTexture(texture);
         }
 
-        ItemStack itemStack = item.build();
-
         if (config.get(path + ".model") != null && config.getInt(path + ".model") != -1) {
-            itemStack = NBTEditor.set(itemStack, config.getInt(path + ".model"), "CustomModelData");
+            item.setNBT(plugin, "CustomModelData", config.getInt(path + ".model"));
         }
 
         // Build the new itemstack
-        return itemStack;
+        return item.create();
     }
 
     /**
@@ -123,14 +120,12 @@ public abstract class Menu {
         this.getMenuConfig().getStringList(path + ".actions").forEach(s -> {
 
             for (Action action : this.actions) {
-
                 if (s.startsWith("[" + action.actionType() + "]")) {
                     int requiredLength = 2 + action.actionType().length();
 
                     final String msg = s.substring(requiredLength);
                     action.executeAction(plugin, player, HexUtils.colorify(PAPI.apply(player, placeholders.apply(msg))));
                 }
-
             }
 
         });
@@ -149,11 +144,16 @@ public abstract class Menu {
         return HexUtils.colorify(PAPI.apply(player, placeholders.apply(string)));
     }
 
-    public GuiItem fillerItem(Player player) {
-        return ItemBuilder.from(this.getGUIItem("filler", null, null)).asGuiItem(event -> clickEvent(player, "filler", StringPlaceholders.empty()));
-    }
-
     public ChatEmojis getPlugin() {
         return plugin;
     }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setMenuConfig(FileConfiguration menuConfig) {
+        this.menuConfig = menuConfig;
+    }
+
 }
