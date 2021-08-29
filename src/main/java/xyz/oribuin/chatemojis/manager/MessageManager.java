@@ -78,11 +78,11 @@ public class MessageManager extends Manager {
 
     /**
      * Send a raw message to the receiver without any placeholders
-     *
+     * <p>
      * Use this to send a message to a player without the message being defined in a config.
      *
      * @param receiver The message receiver
-     * @param message The raw message
+     * @param message  The raw message
      */
     public void sendRaw(CommandSender receiver, String message) {
         this.sendRaw(receiver, message, StringPlaceholders.empty());
@@ -90,11 +90,11 @@ public class MessageManager extends Manager {
 
     /**
      * Send a raw message to the receiver with placeholders.
-     *
+     * <p>
      * Use this to send a message to a player without the message being defined in a config.
      *
-     * @param receiver The message receiver
-     * @param message The message
+     * @param receiver     The message receiver
+     * @param message      The message
      * @param placeholders Message Placeholders.
      */
     public void sendRaw(CommandSender receiver, String message, StringPlaceholders placeholders) {
@@ -112,6 +112,7 @@ public class MessageManager extends Manager {
         MONEY_TAKEN("money-taken", "&bYou have bought the emoji &e%emoji&b for $&e%money%&b!"),
         REMOVED_EMOJI("removed-emoji", "&bYou have deleted the emoji &e%emoji%&b!"),
         OPENED_MENU("opened-menu", "&bYou have opened the menu for &e%player%&b!"),
+        TOGGLED_EMOJIS("toggled-emojis", "You have toggled your emojis %toggled%"),
 
         RELOAD("reload", "&bYou have reloaded ChatEmojis"),
         INVALID_PERMISSION("invalid-permission", "&cYou do not have permission to execute this command."),
