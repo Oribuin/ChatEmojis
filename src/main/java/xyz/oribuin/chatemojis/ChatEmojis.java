@@ -11,7 +11,13 @@ import xyz.oribuin.chatemojis.manager.EmojiManager;
 import xyz.oribuin.chatemojis.manager.MessageManager;
 import xyz.oribuin.orilibrary.OriPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class ChatEmojis extends OriPlugin {
+
+    private final List<UUID> toggleList = new ArrayList<>();
 
     @Override
     public void enablePlugin() {
@@ -46,6 +52,10 @@ public class ChatEmojis extends OriPlugin {
     @Override
     public void disablePlugin() {
 
+    }
+
+    public List<UUID> getToggleList() {
+        return toggleList;
     }
 
 }

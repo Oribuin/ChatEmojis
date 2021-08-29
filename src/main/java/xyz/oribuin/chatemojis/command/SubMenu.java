@@ -12,7 +12,7 @@ import xyz.oribuin.orilibrary.util.StringPlaceholders;
 @SubCommand.Info(
         names = {"menu"},
         usage = "/emojis menu <player>",
-        permission = "chatemojis.player"
+        permission = "chatemojis.menu"
 )
 public class SubMenu extends SubCommand {
 

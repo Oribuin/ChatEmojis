@@ -144,14 +144,6 @@ public abstract class Menu {
         return HexUtils.colorify(PAPI.apply(player, placeholders.apply(string)));
     }
 
-    public ChatEmojis getPlugin() {
-        return plugin;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
     public void setMenuConfig(FileConfiguration menuConfig) {
         this.menuConfig = menuConfig;
     }

@@ -24,7 +24,8 @@ import java.util.stream.Collectors;
                 SubCreate.class,
                 SubReload.class,
                 SubRemove.class,
-                SubMenu.class
+                SubMenu.class,
+                SubToggle.class
         },
         aliases = {"chatemojis"}
 )
@@ -32,7 +33,6 @@ public class CmdEmoji extends Command {
 
     private final ChatEmojis plugin = (ChatEmojis) this.getOriPlugin();
     private final MessageManager msg = this.plugin.getManager(MessageManager.class);
-    private final List<Emoji> cachedEmojis = this.plugin.getManager(EmojiManager.class).getCachedEmojis();
 
     public CmdEmoji(ChatEmojis plugin) {
         super(plugin);
