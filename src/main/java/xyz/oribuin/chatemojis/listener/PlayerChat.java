@@ -30,7 +30,7 @@ public class PlayerChat implements Listener {
 
         emojiManager.getCachedEmojis()
                 .stream()
-                .filter(emoji -> emojiManager.canUseEmoji(player, emoji))
+                .filter(emoji -> emojiManager.canUseEmoji(player, emoji) && event.getMessage().contains(emoji.getCheck().toLowerCase()))
                 .forEach(emoji -> event.setMessage(event.getMessage().replace(emoji.getCheck().toLowerCase(), emoji.getReplacement())));
 
     }
